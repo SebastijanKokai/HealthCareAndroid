@@ -1,25 +1,17 @@
-package com.example.healthcare
+package com.example.healthcare.ui
 
-import android.app.Activity
 import android.content.Context
-import android.content.Intent
-import android.os.Bundle
 import android.widget.Toast
-import androidx.activity.ComponentActivity
-import androidx.activity.compose.setContent
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
-import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -33,27 +25,15 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
+import androidx.navigation.compose.rememberNavController
+import com.example.healthcare.R
 import com.example.healthcare.models.Credentials
+import com.example.healthcare.navigation.Screen
 import com.example.healthcare.ui.theme.HealthCareTheme
 
-class LoginActivity : ComponentActivity() {
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContent {
-            HealthCareTheme {
-                Surface(
-                    modifier = Modifier.fillMaxSize(),
-                    color = MaterialTheme.colorScheme.background
-                ) {
-                    LoginScreen()
-                }
-            }
-        }
-    }
-}
-
 @Composable
-fun LoginScreen(modifier: Modifier = Modifier) {
+fun LoginScreen(navController: NavController) {
     var credentials by remember { mutableStateOf(Credentials()) }
     val context = LocalContext.current
     Column(
@@ -83,7 +63,7 @@ fun LoginScreen(modifier: Modifier = Modifier) {
         )
         Button(
             onClick = {
-                authenticateUser(credentials, context)
+                authenticateUser(credentials, context, navController)
             },
             enabled = true,
             shape = RoundedCornerShape(5.dp),
@@ -94,10 +74,9 @@ fun LoginScreen(modifier: Modifier = Modifier) {
     }
 }
 
-fun authenticateUser(credentials: Credentials, context: Context) {
+fun authenticateUser(credentials: Credentials, context: Context, navController: NavController) {
     if (isCredentialsValid(credentials)) {
-        context.startActivity(Intent(context, MainActivity::class.java))
-        (context as Activity).finish()
+        navController.navigate(Screen.MainScreen.route)
     } else {
         handleInvalidCredentials(context)
     }
@@ -117,6 +96,6 @@ fun isCredentialsValid(credentials: Credentials): Boolean {
 @Composable
 fun LoginScreenPreview() {
     HealthCareTheme {
-        LoginScreen()
+        LoginScreen(rememberNavController())
     }
 }
