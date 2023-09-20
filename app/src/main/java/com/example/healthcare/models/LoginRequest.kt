@@ -1,6 +1,6 @@
 package com.example.healthcare.models
 
-data class Credentials(
+data class LoginRequest(
     var username: String = "",
     var password: String = ""
 ) {
