@@ -20,12 +20,14 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.AnnotatedString
@@ -37,12 +39,37 @@ import androidx.navigation.compose.rememberNavController
 import com.example.healthcare.R
 import com.example.healthcare.models.LoginRequest
 import com.example.healthcare.navigation.Screen
+import com.example.healthcare.sign_in.SignInState
+import com.example.healthcare.ui.common.GoogleButton
 import com.example.healthcare.ui.theme.HealthCareTheme
 
 @Composable
-fun LoginScreen(navController: NavController) {
+fun LoginScreen(
+    navController: NavController,
+    state: SignInState,
+    onSignInClick: () -> Unit,
+    resetState: () -> Unit
+) {
     var loginRequest by remember { mutableStateOf(LoginRequest()) }
     val context = LocalContext.current
+    LaunchedEffect(key1 = state.signInError) {
+        state.signInError?.let { error ->
+            Toast.makeText(
+                context,
+                error,
+                Toast.LENGTH_LONG
+            ).show()
+        }
+    }
+
+    LaunchedEffect(key1 = state.isSignInSuccessful) {
+        if (state.isSignInSuccessful) {
+            Toast.makeText(context, "Successfully logged in", Toast.LENGTH_LONG).show()
+            navController.navigate(Screen.ProfileScreen.route)
+            resetState()
+        }
+    }
+
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -80,6 +107,13 @@ fun LoginScreen(navController: NavController) {
         ) {
             Text("Login")
         }
+        Spacer(modifier = Modifier.size(8.dp))
+        GoogleButton(
+            imageId = R.drawable.ic_google,
+            buttonText = "Login with Google",
+            fontColor = Color.White,
+            onClick = { onSignInClick() }
+        )
         Spacer(modifier = Modifier.size(24.dp))
         Row(
             modifier = Modifier
@@ -120,6 +154,6 @@ fun isCredentialsValid(loginRequest: LoginRequest): Boolean {
 @Composable
 fun LoginScreenPreview() {
     HealthCareTheme {
-        LoginScreen(rememberNavController())
+        LoginScreen(rememberNavController(), SignInState(), {}, {})
     }
 }
