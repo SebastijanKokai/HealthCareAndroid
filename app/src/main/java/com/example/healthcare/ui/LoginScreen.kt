@@ -108,7 +108,7 @@ fun LoginScreen(
             Text("Login")
         }
         Spacer(modifier = Modifier.size(8.dp))
-        GoogleButton(
+        ButtonWithIcon(
             imageId = R.drawable.ic_google,
             buttonText = "Login with Google",
             fontColor = Color.White,
@@ -134,7 +134,7 @@ fun LoginScreen(
 
 fun authenticateUser(loginRequest: LoginRequest, context: Context, navController: NavController) {
     if (isCredentialsValid(loginRequest)) {
-        navController.navigate(Screen.MainScreen.route)
+        navController.navigate(Screen.HomeScreen.route)
     } else {
         handleInvalidCredentials(context)
     }
