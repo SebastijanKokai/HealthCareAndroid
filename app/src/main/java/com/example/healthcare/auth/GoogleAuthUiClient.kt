@@ -1,9 +1,10 @@
-package com.example.healthcare.sign_in
+package com.example.healthcare.auth
 
 import android.content.Context
 import android.content.Intent
 import android.content.IntentSender
 import com.example.healthcare.R
+import com.example.healthcare.models.login.SignInResult
 import com.example.healthcare.models.UserData
 import com.google.android.gms.auth.api.identity.BeginSignInRequest
 import com.google.android.gms.auth.api.identity.BeginSignInRequest.GoogleIdTokenRequestOptions

@@ -37,9 +37,9 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.example.healthcare.R
-import com.example.healthcare.models.LoginRequest
+import com.example.healthcare.models.login.LoginRequest
 import com.example.healthcare.navigation.Screen
-import com.example.healthcare.sign_in.SignInState
+import com.example.healthcare.models.login.SignInState
 import com.example.healthcare.ui.common.GoogleButton
 import com.example.healthcare.ui.theme.HealthCareTheme
 

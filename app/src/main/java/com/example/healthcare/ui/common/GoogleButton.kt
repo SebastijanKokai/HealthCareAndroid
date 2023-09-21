@@ -60,7 +60,7 @@ fun GoogleButton(
                     painter = painterResource(id = imageId),
                     modifier = Modifier
                         .size(18.dp),
-                    contentDescription = "drawable_icons",
+                    contentDescription = "icon",
                     tint = Color.Unspecified
                 )
             }
@@ -84,14 +84,5 @@ fun PreviewGoogleButton() {
             buttonText = "Login with Google",
             fontColor = Color.Black
         )
-        IconButton(onClick = { /*TODO*/ }) {
-            Icon(
-                painter = painterResource(id = R.drawable.ic_google),
-                modifier = Modifier
-                    .size(18.dp),
-                contentDescription = "drawable_icons",
-                tint = Color.Unspecified
-            )
-        }
     }
 }

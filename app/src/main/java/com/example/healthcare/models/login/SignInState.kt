@@ -1,4 +1,4 @@
-package com.example.healthcare.sign_in
+package com.example.healthcare.models.login
 
 data class SignInState(
     val isSignInSuccessful: Boolean = false,

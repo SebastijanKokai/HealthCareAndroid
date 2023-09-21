@@ -27,7 +27,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
-import com.example.healthcare.models.RegisterRequest
+import com.example.healthcare.models.login.RegisterRequest
 import com.example.healthcare.navigation.Screen
 
 @Composable

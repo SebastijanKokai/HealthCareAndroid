@@ -1,4 +1,4 @@
-package com.example.healthcare.sign_in
+package com.example.healthcare.models.login
 
 import com.example.healthcare.models.UserData
 

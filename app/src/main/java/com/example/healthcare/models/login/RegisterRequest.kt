@@ -1,4 +1,4 @@
-package com.example.healthcare.models
+package com.example.healthcare.models.login
 
 import java.time.LocalDate
 

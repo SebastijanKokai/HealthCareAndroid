@@ -1,6 +1,8 @@
-package com.example.healthcare.sign_in
+package com.example.healthcare.auth
 
 import androidx.lifecycle.ViewModel
+import com.example.healthcare.models.login.SignInResult
+import com.example.healthcare.models.login.SignInState
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
