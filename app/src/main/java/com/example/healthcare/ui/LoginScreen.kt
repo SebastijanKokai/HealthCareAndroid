@@ -17,7 +17,6 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicText
 import androidx.compose.foundation.text.ClickableText
 import androidx.compose.material3.Button
-import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -31,7 +30,6 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.AnnotatedString
-import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
@@ -40,7 +38,9 @@ import com.example.healthcare.R
 import com.example.healthcare.models.login.LoginRequest
 import com.example.healthcare.navigation.Screen
 import com.example.healthcare.models.login.SignInState
-import com.example.healthcare.ui.common.GoogleButton
+import com.example.healthcare.ui.common.ButtonWithIcon
+import com.example.healthcare.ui.common.LoginField
+import com.example.healthcare.ui.common.PasswordField
 import com.example.healthcare.ui.theme.HealthCareTheme
 
 @Composable
@@ -51,6 +51,7 @@ fun LoginScreen(
     resetState: () -> Unit
 ) {
     var loginRequest by remember { mutableStateOf(LoginRequest()) }
+
     val context = LocalContext.current
     LaunchedEffect(key1 = state.signInError) {
         state.signInError?.let { error ->
@@ -84,18 +85,18 @@ fun LoginScreen(
             painter = painterResource(id = R.drawable.logo),
             contentDescription = null,
         )
-        OutlinedTextField(
+        LoginField(
             modifier = Modifier.fillMaxWidth(),
             value = loginRequest.username,
-            onValueChange = { data -> loginRequest = loginRequest.copy(username = data) },
-            label = { Text("Username") },
+            onChange = { data -> loginRequest = loginRequest.copy(username = data) },
         )
-        OutlinedTextField(
+        PasswordField(
             modifier = Modifier.fillMaxWidth(),
             value = loginRequest.password,
-            onValueChange = { data -> loginRequest = loginRequest.copy(password = data) },
-            label = { Text("Password") },
-            visualTransformation = PasswordVisualTransformation(),
+            onChange = { data -> loginRequest = loginRequest.copy(password = data) },
+            submit = {
+                authenticateUser(loginRequest, context, navController)
+            }
         )
         Button(
             onClick = {
