@@ -1,14 +1,18 @@
 package com.example.healthcare.ui.patients
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Person
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.tooling.preview.Preview
@@ -20,8 +24,11 @@ import java.time.temporal.TemporalQueries.localDate
 
 
 @Composable
-fun PatientItem(patientData: PatientData) {
-    Row {
+fun PatientItem(modifier: Modifier, patientData: PatientData) {
+    Row(
+        modifier.fillMaxWidth(),
+        verticalAlignment = Alignment.CenterVertically,
+    ) {
 //        AsyncImage(
 //            modifier = Modifier
 //                .size(150.dp)
@@ -62,7 +69,9 @@ fun PatientItem(patientData: PatientData) {
 @Composable
 fun PreviewPatientItem() {
     PatientItem(
+        Modifier.padding(vertical = 8.dp),
         PatientData(
+            id = "1",
             firstName = "Name1",
             lastName = "LastName1",
             photoUrl = "https://randomuser.me/api/portraits/med/women/57.jpg",

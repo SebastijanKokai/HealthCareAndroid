@@ -12,15 +12,18 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.platform.LocalContext
 import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import androidx.navigation.navArgument
 import com.example.healthcare.auth.GoogleAuthUiClient
 import com.example.healthcare.auth.SignInViewModel
 import com.example.healthcare.ui.LoginScreen
 import com.example.healthcare.ui.HomeScreen
 import com.example.healthcare.ui.ProfileScreen
 import com.example.healthcare.ui.RegisterScreen
+import com.example.healthcare.ui.patients.PatientDetailScreen
 import com.google.android.gms.auth.api.identity.Identity
 import kotlinx.coroutines.launch
 
@@ -42,7 +45,7 @@ fun Navigation() {
 
             LaunchedEffect(Unit) {
                 if (googleAuthUiClient.getSignedInUser() != null) {
-                    navController.navigate(Screen.ProfileScreen.route)
+                    navController.navigate(Screen.HomeScreen.route)
                 }
             }
 
@@ -92,7 +95,16 @@ fun Navigation() {
                 })
         }
         composable(route = Screen.HomeScreen.route) {
-            HomeScreen()
+            HomeScreen(navController)
+        }
+        composable(
+            route = Screen.PatientDetailScreen.route,
+            arguments = listOf(navArgument("patient_id") { type = NavType.StringType })
+        ) {
+            val id = it.arguments?.getString("patient_id")
+            id?.let {
+                PatientDetailScreen(patientId = id)
+            }
         }
     }
 }

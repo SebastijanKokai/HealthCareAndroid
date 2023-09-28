@@ -12,6 +12,7 @@ fun fetchPatientRecords(): List<PatientData> {
     for (i in 1..10) {
         patientList.add(
             PatientData(
+                id = "$i",
                 firstName = "Name$i",
                 lastName = "LastName$i",
                 photoUrl = "https://randomuser.me/api/portraits/med/women/57.jpg",

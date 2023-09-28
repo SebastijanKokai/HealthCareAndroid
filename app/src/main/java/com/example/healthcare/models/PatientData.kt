@@ -3,6 +3,7 @@ package com.example.healthcare.models
 import java.time.LocalDate
 
 data class PatientData(
+    val id: String,
     val firstName: String,
     val lastName: String,
     val photoUrl: String?,
