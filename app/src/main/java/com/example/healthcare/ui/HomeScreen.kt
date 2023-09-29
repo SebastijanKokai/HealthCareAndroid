@@ -11,7 +11,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
-import com.example.healthcare.datasource.fetchPatientRecords
+import com.example.healthcare.data.fetchPatientRecords
 import com.example.healthcare.navigation.Screen
 import com.example.healthcare.ui.patients.PatientItem
 
@@ -26,7 +26,7 @@ fun HomeScreen(navController: NavController) {
                     newValue = it.id
                 ))
             }) {
-                PatientItem(patientData = it, modifier = Modifier.padding(vertical = 8.dp))
+                PatientItem(patient = it, modifier = Modifier.padding(vertical = 8.dp))
             }
         }
     }

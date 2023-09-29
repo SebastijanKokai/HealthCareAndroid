@@ -1,9 +1,12 @@
-package com.example.healthcare.models
+package com.example.healthcare.data.room.entities
 
+import androidx.room.Entity
+import androidx.room.PrimaryKey
 import java.time.LocalDate
 
-data class PatientData(
-    val id: String,
+@Entity
+data class Patient(
+    @PrimaryKey val id: String,
     val firstName: String,
     val lastName: String,
     val photoUrl: String?,

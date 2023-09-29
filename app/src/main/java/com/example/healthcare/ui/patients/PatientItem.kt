@@ -1,7 +1,6 @@
 package com.example.healthcare.ui.patients
 
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -17,14 +16,13 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.example.healthcare.models.PatientData
+import com.example.healthcare.data.room.entities.Patient
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
-import java.time.temporal.TemporalQueries.localDate
 
 
 @Composable
-fun PatientItem(modifier: Modifier, patientData: PatientData) {
+fun PatientItem(modifier: Modifier, patient: Patient) {
     Row(
         modifier.fillMaxWidth(),
         verticalAlignment = Alignment.CenterVertically,
@@ -38,7 +36,7 @@ fun PatientItem(modifier: Modifier, patientData: PatientData) {
 //            contentScale = ContentScale.Crop
 //        )
         val formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy.")
-        val formattedDateOfBirth: String? = patientData.dateOfBirth?.format(formatter)
+        val formattedDateOfBirth: String? = patient.dateOfBirth?.format(formatter)
 
         Image(
             modifier = Modifier
@@ -49,16 +47,16 @@ fun PatientItem(modifier: Modifier, patientData: PatientData) {
         )
         Column {
             Text(
-                patientData.firstName + " " + patientData.lastName
+                patient.firstName + " " + patient.lastName
             )
             if (formattedDateOfBirth != null) {
                 Text(
                     formattedDateOfBirth
                 )
             }
-            if (patientData.illness != null) {
+            if (patient.illness != null) {
                 Text(
-                    patientData.illness
+                    patient.illness
                 )
             }
         }
@@ -70,7 +68,7 @@ fun PatientItem(modifier: Modifier, patientData: PatientData) {
 fun PreviewPatientItem() {
     PatientItem(
         Modifier.padding(vertical = 8.dp),
-        PatientData(
+        Patient(
             id = "1",
             firstName = "Name1",
             lastName = "LastName1",

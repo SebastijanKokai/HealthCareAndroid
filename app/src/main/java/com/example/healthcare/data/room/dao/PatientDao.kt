@@ -1,0 +1,14 @@
+package com.example.healthcare.data.room.dao
+
+import androidx.room.Dao
+import androidx.room.Query
+import com.example.healthcare.data.room.entities.Patient
+
+@Dao
+interface PatientDao {
+    @Query("SELECT * FROM patient")
+    fun getAll(): List<Patient>
+
+    @Query("SELECT * FROM patient WHERE id = :patientId")
+    fun getById(patientId: String): Patient
+}
