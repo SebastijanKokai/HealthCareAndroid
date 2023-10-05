@@ -1,7 +1,9 @@
-package com.example.healthcare.ui
+package com.example.healthcare.ui.login
 
 import android.content.Context
 import android.widget.Toast
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -19,7 +21,6 @@ import androidx.compose.foundation.text.ClickableText
 import androidx.compose.material3.Button
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -32,12 +33,13 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.example.healthcare.R
+import com.example.healthcare.auth.AuthRepository
 import com.example.healthcare.models.login.LoginRequest
 import com.example.healthcare.navigation.Screen
-import com.example.healthcare.models.login.SignInState
 import com.example.healthcare.ui.common.ButtonWithIcon
 import com.example.healthcare.ui.common.LoginField
 import com.example.healthcare.ui.common.PasswordField
@@ -46,30 +48,16 @@ import com.example.healthcare.ui.theme.HealthCareTheme
 @Composable
 fun LoginScreen(
     navController: NavController,
-    state: SignInState,
-    onSignInClick: () -> Unit,
-    resetState: () -> Unit
+    loginViewModel: LoginViewModel = hiltViewModel()
 ) {
-    var loginRequest by remember { mutableStateOf(LoginRequest()) }
-
     val context = LocalContext.current
-    LaunchedEffect(key1 = state.signInError) {
-        state.signInError?.let { error ->
-            Toast.makeText(
-                context,
-                error,
-                Toast.LENGTH_LONG
-            ).show()
-        }
-    }
-
-    LaunchedEffect(key1 = state.isSignInSuccessful) {
-        if (state.isSignInSuccessful) {
-            Toast.makeText(context, "Successfully logged in", Toast.LENGTH_LONG).show()
-            navController.navigate(Screen.ProfileScreen.route)
-            resetState()
-        }
-    }
+    var loginRequest by remember { mutableStateOf(LoginRequest()) }
+//    val launcher = rememberLauncherForActivityResult(
+//        contract = ActivityResultContracts.StartIntentSenderForResult(),
+//        onResult = { result ->
+//
+//        }
+//    )
 
     Column(
         modifier = Modifier
@@ -113,7 +101,7 @@ fun LoginScreen(
             imageId = R.drawable.ic_google,
             buttonText = "Login with Google",
             fontColor = Color.White,
-            onClick = { onSignInClick() }
+            onClick = {}
         )
         Spacer(modifier = Modifier.size(24.dp))
         Row(
@@ -155,6 +143,6 @@ fun isCredentialsValid(loginRequest: LoginRequest): Boolean {
 @Composable
 fun LoginScreenPreview() {
     HealthCareTheme {
-        LoginScreen(rememberNavController(), SignInState(), {}, {})
+        LoginScreen(rememberNavController(), hiltViewModel())
     }
 }
