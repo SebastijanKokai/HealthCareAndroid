@@ -10,5 +10,5 @@ data class UserData(
     var contactNumber: String?,
     var profilePictureUrl: String?,
     var dateOfBirth: LocalDate? = LocalDate.now(),
-    var email: String?,
+    var email: String? = "",
 )

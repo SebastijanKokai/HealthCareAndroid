@@ -21,6 +21,8 @@ import androidx.compose.foundation.text.ClickableText
 import androidx.compose.material3.Button
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -37,7 +39,6 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.example.healthcare.R
-import com.example.healthcare.auth.AuthRepository
 import com.example.healthcare.models.login.LoginRequest
 import com.example.healthcare.navigation.Screen
 import com.example.healthcare.ui.common.ButtonWithIcon
@@ -52,12 +53,43 @@ fun LoginScreen(
 ) {
     val context = LocalContext.current
     var loginRequest by remember { mutableStateOf(LoginRequest()) }
-//    val launcher = rememberLauncherForActivityResult(
-//        contract = ActivityResultContracts.StartIntentSenderForResult(),
-//        onResult = { result ->
-//
-//        }
-//    )
+    val state by loginViewModel.state.collectAsState()
+    val launcher = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.StartIntentSenderForResult(),
+        onResult = { result ->
+            loginViewModel.handleGoogleLoginResult(result)
+        }
+    )
+
+    LaunchedEffect(key1 = loginViewModel.isLoggedIn()) {
+        navController.navigate(Screen.HomeScreen.route) {
+            this.popUpTo(Screen.LoginScreen.route) {
+                this.inclusive = true
+            }
+        }
+    }
+
+    LaunchedEffect(key1 = state) {
+        if (state.isLoginSuccessful) {
+            Toast.makeText(
+                context,
+                "Login successful",
+                Toast.LENGTH_LONG
+            ).show()
+            navController.navigate(Screen.HomeScreen.route) {
+                this.popUpTo(Screen.LoginScreen.route) {
+                    this.inclusive = true
+                }
+            }
+        } else if (state.loginError != null) {
+            Toast.makeText(
+                context,
+                state.loginError,
+                Toast.LENGTH_LONG
+            ).show()
+        }
+        loginViewModel.resetState()
+    }
 
     Column(
         modifier = Modifier
@@ -101,7 +133,9 @@ fun LoginScreen(
             imageId = R.drawable.ic_google,
             buttonText = "Login with Google",
             fontColor = Color.White,
-            onClick = {}
+            onClick = {
+                loginViewModel.googleLogin(launcher)
+            }
         )
         Spacer(modifier = Modifier.size(24.dp))
         Row(

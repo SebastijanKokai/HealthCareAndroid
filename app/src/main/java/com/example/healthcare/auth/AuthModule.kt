@@ -26,23 +26,12 @@ class AuthModule {
         )
         .build()
 
-    private val signUpRequest = BeginSignInRequest.builder()
-        .setGoogleIdTokenRequestOptions(
-            BeginSignInRequest.GoogleIdTokenRequestOptions.builder()
-                .setSupported(true)
-                .setServerClientId(BuildConfig.SERVER_CLIENT_ID)
-                .setFilterByAuthorizedAccounts(false)
-                .build()
-        )
-        .build()
-
     @Provides
     @Singleton
     fun provideAuthRepository(@ApplicationContext applicationContext: Context): IAuthRepository {
         return AuthRepository(
             Identity.getSignInClient(applicationContext),
             signInRequest,
-            signUpRequest,
             Firebase.auth
         )
     }
