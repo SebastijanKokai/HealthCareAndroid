@@ -1,14 +1,15 @@
 package com.example.healthcare.data.repositories
 
+import com.example.healthcare.data.room.dao.PatientDao
 import com.example.healthcare.data.room.entities.Patient
+import kotlinx.coroutines.flow.Flow
 
-class PatientRepository : IPatientRepository {
-
-    override fun getAll(): List<Patient> {
-        TODO("Not yet implemented")
+class PatientRepository constructor(private val patientDao: PatientDao) : IPatientRepository {
+    override fun getAll(): Flow<List<Patient>> {
+        return patientDao.getAll()
     }
 
-    override fun getById(): Patient {
-        TODO("Not yet implemented")
+    override fun getById(id: String): Flow<Patient> {
+        return patientDao.getById(id)
     }
 }
