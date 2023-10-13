@@ -14,7 +14,8 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class RegisterViewModel @Inject constructor(private val authRepository: IAuthRepository) : ViewModel() {
+class RegisterViewModel @Inject constructor(private val authRepository: IAuthRepository) :
+    ViewModel() {
 
     private val _state = MutableStateFlow(RegisterState())
     val state = _state.asStateFlow()
@@ -34,5 +35,9 @@ class RegisterViewModel @Inject constructor(private val authRepository: IAuthRep
                 registerError = registerResult.errorMessage
             )
         }
+    }
+
+    fun resetState() {
+        _state.update { RegisterState() }
     }
 }

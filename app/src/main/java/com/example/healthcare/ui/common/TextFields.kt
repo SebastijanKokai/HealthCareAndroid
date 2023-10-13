@@ -31,17 +31,18 @@ fun LoginField(
     onChange: (String) -> Unit,
     modifier: Modifier = Modifier,
     label: String = "Email",
-    placeholder: String = "Enter your email"
+    placeholder: String = "Enter your email",
+    leadingIcon: @Composable () -> Unit
 ) {
 
     val focusManager = LocalFocusManager.current
-    val leadingIcon = @Composable {
-        Icon(
-            Icons.Default.Person,
-            contentDescription = "",
-            tint = MaterialTheme.colorScheme.primary
-        )
-    }
+//    val leadingIcon = @Composable {
+//        Icon(
+//            Icons.Default.Person,
+//            contentDescription = "",
+//            tint = MaterialTheme.colorScheme.primary
+//        )
+//    }
 
     TextField(
         value = value,

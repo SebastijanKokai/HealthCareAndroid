@@ -19,7 +19,11 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicText
 import androidx.compose.foundation.text.ClickableText
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Person
 import androidx.compose.material3.Button
+import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -113,6 +117,13 @@ fun LoginScreen(
             modifier = Modifier.fillMaxWidth(),
             value = loginRequest.email,
             onChange = { data -> loginRequest = loginRequest.copy(email = data) },
+            leadingIcon = @Composable {
+                Icon(
+                    Icons.Default.Person,
+                    contentDescription = "",
+                    tint = MaterialTheme.colorScheme.primary
+                )
+            }
         )
         PasswordField(
             modifier = Modifier.fillMaxWidth(),

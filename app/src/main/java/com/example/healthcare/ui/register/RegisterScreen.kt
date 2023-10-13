@@ -1,7 +1,6 @@
 package com.example.healthcare.ui.register
 
 import android.content.Context
-import android.text.TextUtils
 import android.widget.Toast
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -14,8 +13,11 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicText
 import androidx.compose.foundation.text.ClickableText
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Mail
 import androidx.compose.material3.Button
-import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -28,7 +30,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.AnnotatedString
-import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -37,6 +38,8 @@ import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.example.healthcare.models.register.RegisterRequest
 import com.example.healthcare.navigation.Screen
+import com.example.healthcare.ui.common.LoginField
+import com.example.healthcare.ui.common.PasswordField
 
 @Composable
 fun RegisterScreen(
@@ -51,11 +54,17 @@ fun RegisterScreen(
         if (state.isRegisterSuccessful) {
             Toast.makeText(context, "Registered successfully.", Toast.LENGTH_LONG)
                 .show()
-            // TODO Login immediately
+            resetRegisterRequest(registerRequest)
+            navController.navigate(Screen.HomeScreen.route) {
+                this.popUpTo(Screen.LoginScreen.route) {
+                    this.inclusive = true
+                }
+            }
         } else if (state.registerError != null) {
             Toast.makeText(context, state.registerError, Toast.LENGTH_LONG)
                 .show()
         }
+        viewModel.resetState()
     }
 
     Column(
@@ -65,50 +74,26 @@ fun RegisterScreen(
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-//        OutlinedTextField(
-//            modifier = Modifier.fillMaxWidth(),
-//            value = registerRequest.firstName,
-//            onValueChange = { data -> registerRequest = registerRequest.copy(firstName = data) },
-//            label = { Text("First Name") },
-//        )
-//        OutlinedTextField(
-//            modifier = Modifier.fillMaxWidth(),
-//            value = registerRequest.lastName,
-//            onValueChange = { data -> registerRequest = registerRequest.copy(lastName = data) },
-//            label = { Text("Last Name") },
-//        )
-//        OutlinedTextField(
-//            modifier = Modifier.fillMaxWidth(),
-//            value = registerRequest.contactNumber,
-//            onValueChange = { data ->
-//                registerRequest = registerRequest.copy(contactNumber = data)
-//            },
-//            label = { Text("Contact number") },
-//        )
-//        OutlinedTextField(
-//            modifier = Modifier.fillMaxWidth(),
-//            value = "",
-//            onValueChange = { },
-//            label = { Text("DateOfBirth") },
-//        )
-        OutlinedTextField(
+        LoginField(
             modifier = Modifier.fillMaxWidth(),
             value = registerRequest.email,
-            onValueChange = { data -> registerRequest = registerRequest.copy(email = data) },
-            label = { Text("E-mail") },
+            onChange = { data -> registerRequest = registerRequest.copy(email = data) },
+            label = "E-mail",
+            leadingIcon = @Composable {
+                Icon(
+                    Icons.Default.Mail,
+                    contentDescription = "",
+                    tint = MaterialTheme.colorScheme.primary
+                )
+            }
         )
-//        OutlinedTextField(
-//            modifier = Modifier.fillMaxWidth(),
-//            value = registerRequest.username,
-//            onValueChange = { data -> registerRequest = registerRequest.copy(username = data) },
-//            label = { Text("Username") },
-//        )
-        OutlinedTextField(
+        PasswordField(
             modifier = Modifier.fillMaxWidth(),
             value = registerRequest.password,
-            onValueChange = { data -> registerRequest = registerRequest.copy(password = data) },
-            label = { Text("Password") },
-            visualTransformation = PasswordVisualTransformation(),
+            onChange = { data -> registerRequest = registerRequest.copy(password = data) },
+            submit = {
+                validateRequestThenRegisterUser(registerRequest, viewModel, context)
+            }
         )
         Button(
             onClick = {
@@ -137,6 +122,11 @@ fun RegisterScreen(
         }
     }
 
+}
+
+fun resetRegisterRequest(registerRequest: RegisterRequest) {
+    registerRequest.email = ""
+    registerRequest.password = ""
 }
 
 fun validateRequestThenRegisterUser(
