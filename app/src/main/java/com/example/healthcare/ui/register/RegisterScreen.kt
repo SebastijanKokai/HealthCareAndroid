@@ -144,25 +144,12 @@ fun validateRequestThenRegisterUser(
     registerViewModel: RegisterViewModel,
     context: Context
 ) {
-    if (isRequestValid(registerRequest)) {
+    if (registerRequest.isValid()) {
         registerViewModel.registerUser(registerRequest)
     } else {
         Toast.makeText(context, "Email or password are not in valid format.", Toast.LENGTH_LONG)
             .show()
     }
-}
-
-fun isRequestValid(registerRequest: RegisterRequest): Boolean {
-    return isEmailValid(registerRequest.email) && isPasswordValid(registerRequest.password)
-}
-
-fun isEmailValid(email: String): Boolean {
-    return !TextUtils.isEmpty(email) && android.util.Patterns.EMAIL_ADDRESS.matcher(email)
-        .matches()
-}
-
-fun isPasswordValid(password: String): Boolean {
-    return password.length >= 6
 }
 
 @Preview(showBackground = true)

@@ -30,8 +30,8 @@ fun LoginField(
     value: String,
     onChange: (String) -> Unit,
     modifier: Modifier = Modifier,
-    label: String = "Username",
-    placeholder: String = "Enter your username"
+    label: String = "Email",
+    placeholder: String = "Enter your email"
 ) {
 
     val focusManager = LocalFocusManager.current

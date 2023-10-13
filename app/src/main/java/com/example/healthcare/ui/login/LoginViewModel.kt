@@ -7,6 +7,7 @@ import androidx.activity.result.IntentSenderRequest
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.healthcare.auth.IAuthRepository
+import com.example.healthcare.models.login.LoginRequest
 import com.example.healthcare.models.login.LoginResult
 import com.example.healthcare.models.login.LoginState
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -25,10 +26,10 @@ class LoginViewModel @Inject constructor(private val authRepository: IAuthReposi
 
     fun googleLogin(launcher: ManagedActivityResultLauncher<IntentSenderRequest, ActivityResult>) {
         viewModelScope.launch {
-            val signInIntentSender = authRepository.signInWithGoogle()
+            val loginIntentSender = authRepository.loginWithGoogle()
             launcher.launch(
                 IntentSenderRequest.Builder(
-                    signInIntentSender ?: return@launch
+                    loginIntentSender ?: return@launch
                 ).build()
             )
         }
@@ -37,11 +38,18 @@ class LoginViewModel @Inject constructor(private val authRepository: IAuthReposi
     fun handleGoogleLoginResult(result: ActivityResult) {
         if (result.resultCode == RESULT_OK) {
             viewModelScope.launch {
-                val loginResult = authRepository.signInWithIntent(
+                val loginResult = authRepository.loginWithIntent(
                     intent = result.data ?: return@launch
                 )
                 onLoginResult(loginResult)
             }
+        }
+    }
+
+    fun login(loginRequest: LoginRequest) {
+        viewModelScope.launch {
+            val loginResult = authRepository.login(loginRequest)
+            onLoginResult(loginResult)
         }
     }
 
@@ -58,7 +66,7 @@ class LoginViewModel @Inject constructor(private val authRepository: IAuthReposi
         _state.update { LoginState() }
     }
 
-    fun isLoggedIn() : Boolean {
-        return authRepository.getSignedInUser() != null
+    fun isLoggedIn(): Boolean {
+        return authRepository.getLoggedInUser() != null
     }
 }

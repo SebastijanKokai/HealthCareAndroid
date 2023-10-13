@@ -3,6 +3,7 @@ package com.example.healthcare.auth
 import android.content.Intent
 import android.content.IntentSender
 import com.example.healthcare.models.UserData
+import com.example.healthcare.models.login.LoginRequest
 import com.example.healthcare.models.login.LoginResult
 import com.example.healthcare.models.register.RegisterRequest
 import com.example.healthcare.models.register.RegisterResult
@@ -47,7 +48,33 @@ class AuthRepository @Inject constructor(
         }
     }
 
-    override suspend fun signInWithGoogle(): IntentSender? {
+    override suspend fun login(loginRequest: LoginRequest): LoginResult {
+        return try {
+            val user =
+                firebaseAuth.signInWithEmailAndPassword(loginRequest.email, loginRequest.password)
+                    .await().user
+            LoginResult(
+                data = user?.run {
+                    UserData(
+                        userId = uid,
+                        username = displayName,
+                        profilePictureUrl = photoUrl?.toString(),
+                        contactNumber = phoneNumber,
+                    )
+                },
+                errorMessage = null
+            )
+        } catch (e: Exception) {
+            e.printStackTrace()
+            if (e is CancellationException) throw e
+            LoginResult(
+                data = null,
+                errorMessage = e.message
+            )
+        }
+    }
+
+    override suspend fun loginWithGoogle(): IntentSender? {
         val result = try {
             oneTapClient.beginSignIn(signInRequest).await()
         } catch (e: Exception) {
@@ -58,7 +85,7 @@ class AuthRepository @Inject constructor(
         return result?.pendingIntent?.intentSender
     }
 
-    override suspend fun signInWithIntent(intent: Intent): LoginResult {
+    override suspend fun loginWithIntent(intent: Intent): LoginResult {
         val credential = oneTapClient.getSignInCredentialFromIntent(intent)
         val googleIdToken = credential.googleIdToken
         val googleCredentials = GoogleAuthProvider.getCredential(googleIdToken, null)
@@ -86,7 +113,7 @@ class AuthRepository @Inject constructor(
         }
     }
 
-    override suspend fun signOut() {
+    override suspend fun logout() {
         try {
             oneTapClient.signOut().await()
             firebaseAuth.signOut()
@@ -96,7 +123,7 @@ class AuthRepository @Inject constructor(
         }
     }
 
-    override fun getSignedInUser(): UserData? = firebaseAuth.currentUser?.run {
+    override fun getLoggedInUser(): UserData? = firebaseAuth.currentUser?.run {
         UserData(
             userId = uid,
             username = displayName,

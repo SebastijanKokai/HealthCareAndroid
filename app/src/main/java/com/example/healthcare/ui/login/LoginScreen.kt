@@ -1,6 +1,7 @@
 package com.example.healthcare.ui.login
 
 import android.content.Context
+import android.util.Log
 import android.widget.Toast
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
@@ -40,10 +41,12 @@ import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.example.healthcare.R
 import com.example.healthcare.models.login.LoginRequest
+import com.example.healthcare.models.register.RegisterRequest
 import com.example.healthcare.navigation.Screen
 import com.example.healthcare.ui.common.ButtonWithIcon
 import com.example.healthcare.ui.common.LoginField
 import com.example.healthcare.ui.common.PasswordField
+import com.example.healthcare.ui.register.RegisterViewModel
 import com.example.healthcare.ui.theme.HealthCareTheme
 
 @Composable
@@ -61,13 +64,13 @@ fun LoginScreen(
         }
     )
 
-    LaunchedEffect(key1 = loginViewModel.isLoggedIn()) {
-        navController.navigate(Screen.HomeScreen.route) {
-            this.popUpTo(Screen.LoginScreen.route) {
-                this.inclusive = true
-            }
-        }
-    }
+//    LaunchedEffect(key1 = loginViewModel.isLoggedIn()) {
+//        navController.navigate(Screen.HomeScreen.route) {
+//            this.popUpTo(Screen.LoginScreen.route) {
+//                this.inclusive = true
+//            }
+//        }
+//    }
 
     LaunchedEffect(key1 = state) {
         if (state.isLoginSuccessful) {
@@ -87,6 +90,7 @@ fun LoginScreen(
                 state.loginError,
                 Toast.LENGTH_LONG
             ).show()
+            Log.e("ERROR", state.loginError!!)
         }
         loginViewModel.resetState()
     }
@@ -107,20 +111,20 @@ fun LoginScreen(
         )
         LoginField(
             modifier = Modifier.fillMaxWidth(),
-            value = loginRequest.username,
-            onChange = { data -> loginRequest = loginRequest.copy(username = data) },
+            value = loginRequest.email,
+            onChange = { data -> loginRequest = loginRequest.copy(email = data) },
         )
         PasswordField(
             modifier = Modifier.fillMaxWidth(),
             value = loginRequest.password,
             onChange = { data -> loginRequest = loginRequest.copy(password = data) },
             submit = {
-                authenticateUser(loginRequest, context, navController)
+                validateRequestThenAuthenticateUser(loginRequest, loginViewModel, context)
             }
         )
         Button(
             onClick = {
-                authenticateUser(loginRequest, context, navController)
+                validateRequestThenAuthenticateUser(loginRequest, loginViewModel, context)
             },
             enabled = true,
             shape = RoundedCornerShape(5.dp),
@@ -155,22 +159,17 @@ fun LoginScreen(
     }
 }
 
-fun authenticateUser(loginRequest: LoginRequest, context: Context, navController: NavController) {
-    if (isCredentialsValid(loginRequest)) {
-        navController.navigate(Screen.HomeScreen.route)
+fun validateRequestThenAuthenticateUser(
+    loginRequest: LoginRequest,
+    viewModel: LoginViewModel,
+    context: Context
+) {
+    if (loginRequest.isValid()) {
+        viewModel.login(loginRequest)
     } else {
-        handleInvalidCredentials(context)
+        Toast.makeText(context, "Email or password are not in valid format.", Toast.LENGTH_LONG)
+            .show()
     }
-}
-
-fun handleInvalidCredentials(context: Context) {
-    Toast.makeText(context, "Wrong Credentials", Toast.LENGTH_SHORT).show()
-}
-
-fun isCredentialsValid(loginRequest: LoginRequest): Boolean {
-    return loginRequest.isNotEmpty()
-            && loginRequest.username == "admin"
-            && loginRequest.password == "1234"
 }
 
 @Preview(showBackground = true)
