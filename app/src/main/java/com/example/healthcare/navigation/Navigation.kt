@@ -8,7 +8,7 @@ import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.example.healthcare.ui.login.LoginScreen
 import com.example.healthcare.ui.HomeScreen
-import com.example.healthcare.ui.RegisterScreen
+import com.example.healthcare.ui.register.RegisterScreen
 import com.example.healthcare.ui.patients.PatientDetailScreen
 
 @Composable

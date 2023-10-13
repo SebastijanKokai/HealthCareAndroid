@@ -1,5 +1,8 @@
-package com.example.healthcare.ui.login
+package com.example.healthcare.ui.register
 
+import android.content.Context
+import android.text.TextUtils
+import android.widget.Toast
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -15,24 +18,45 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
-import com.example.healthcare.models.login.RegisterRequest
+import com.example.healthcare.models.register.RegisterRequest
 import com.example.healthcare.navigation.Screen
 
 @Composable
-fun RegisterScreen(navController: NavController) {
+fun RegisterScreen(
+    navController: NavController,
+    viewModel: RegisterViewModel = hiltViewModel()
+) {
+    val context = LocalContext.current
     var registerRequest by remember { mutableStateOf(RegisterRequest()) }
+    val state by viewModel.state.collectAsState()
+
+    LaunchedEffect(key1 = state) {
+        if (state.isRegisterSuccessful) {
+            Toast.makeText(context, "Registered successfully.", Toast.LENGTH_LONG)
+                .show()
+            // TODO Login immediately
+        } else if (state.registerError != null) {
+            Toast.makeText(context, state.registerError, Toast.LENGTH_LONG)
+                .show()
+        }
+    }
 
     Column(
         modifier = Modifier
@@ -88,11 +112,8 @@ fun RegisterScreen(navController: NavController) {
         )
         Button(
             onClick = {
-                registerUser()
-            },
-            enabled = true,
-            shape = RoundedCornerShape(5.dp),
-            modifier = Modifier.fillMaxWidth()
+                validateRequestThenRegisterUser(registerRequest, viewModel, context)
+            }, enabled = true, shape = RoundedCornerShape(5.dp), modifier = Modifier.fillMaxWidth()
         ) {
             Text("Register")
         }
@@ -104,23 +125,49 @@ fun RegisterScreen(navController: NavController) {
             horizontalArrangement = Arrangement.Center
         ) {
             BasicText("Already registered?")
-            ClickableText(
-                modifier = Modifier.padding(start = 8.dp, end = 8.dp),
+            ClickableText(modifier = Modifier.padding(start = 8.dp, end = 8.dp),
                 text = AnnotatedString("Login"),
                 onClick = {
-                    navController.navigate(Screen.LoginScreen.route)
+                    navController.navigate(Screen.LoginScreen.route) {
+                        popUpTo(Screen.LoginScreen.route) {
+                            inclusive = true
+                        }
+                    }
                 })
         }
     }
 
 }
 
-fun registerUser() {
-    // TODO implement registration of user
+fun validateRequestThenRegisterUser(
+    registerRequest: RegisterRequest,
+    registerViewModel: RegisterViewModel,
+    context: Context
+) {
+    if (isRequestValid(registerRequest)) {
+        registerViewModel.registerUser(registerRequest)
+    } else {
+        Toast.makeText(context, "Email or password are not in valid format.", Toast.LENGTH_LONG)
+            .show()
+    }
+}
+
+fun isRequestValid(registerRequest: RegisterRequest): Boolean {
+    return isEmailValid(registerRequest.email) && isPasswordValid(registerRequest.password)
+}
+
+fun isEmailValid(email: String): Boolean {
+    return !TextUtils.isEmpty(email) && android.util.Patterns.EMAIL_ADDRESS.matcher(email)
+        .matches()
+}
+
+fun isPasswordValid(password: String): Boolean {
+    return password.length >= 6
 }
 
 @Preview(showBackground = true)
 @Composable
 fun RegisterPreview() {
-    RegisterScreen(rememberNavController())
+    val viewModel = viewModel<RegisterViewModel>()
+    RegisterScreen(rememberNavController(), viewModel)
 }
