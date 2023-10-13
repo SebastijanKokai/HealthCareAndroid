@@ -1,4 +1,4 @@
-package com.example.healthcare.ui
+package com.example.healthcare.ui.login
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -41,44 +41,44 @@ fun RegisterScreen(navController: NavController) {
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        OutlinedTextField(
-            modifier = Modifier.fillMaxWidth(),
-            value = registerRequest.firstName,
-            onValueChange = { data -> registerRequest = registerRequest.copy(firstName = data) },
-            label = { Text("First Name") },
-        )
-        OutlinedTextField(
-            modifier = Modifier.fillMaxWidth(),
-            value = registerRequest.lastName,
-            onValueChange = { data -> registerRequest = registerRequest.copy(lastName = data) },
-            label = { Text("Last Name") },
-        )
-        OutlinedTextField(
-            modifier = Modifier.fillMaxWidth(),
-            value = registerRequest.contactNumber,
-            onValueChange = { data ->
-                registerRequest = registerRequest.copy(contactNumber = data)
-            },
-            label = { Text("Contact number") },
-        )
-        OutlinedTextField(
-            modifier = Modifier.fillMaxWidth(),
-            value = "",
-            onValueChange = { },
-            label = { Text("DateOfBirth") },
-        )
+//        OutlinedTextField(
+//            modifier = Modifier.fillMaxWidth(),
+//            value = registerRequest.firstName,
+//            onValueChange = { data -> registerRequest = registerRequest.copy(firstName = data) },
+//            label = { Text("First Name") },
+//        )
+//        OutlinedTextField(
+//            modifier = Modifier.fillMaxWidth(),
+//            value = registerRequest.lastName,
+//            onValueChange = { data -> registerRequest = registerRequest.copy(lastName = data) },
+//            label = { Text("Last Name") },
+//        )
+//        OutlinedTextField(
+//            modifier = Modifier.fillMaxWidth(),
+//            value = registerRequest.contactNumber,
+//            onValueChange = { data ->
+//                registerRequest = registerRequest.copy(contactNumber = data)
+//            },
+//            label = { Text("Contact number") },
+//        )
+//        OutlinedTextField(
+//            modifier = Modifier.fillMaxWidth(),
+//            value = "",
+//            onValueChange = { },
+//            label = { Text("DateOfBirth") },
+//        )
         OutlinedTextField(
             modifier = Modifier.fillMaxWidth(),
             value = registerRequest.email,
             onValueChange = { data -> registerRequest = registerRequest.copy(email = data) },
             label = { Text("E-mail") },
         )
-        OutlinedTextField(
-            modifier = Modifier.fillMaxWidth(),
-            value = registerRequest.username,
-            onValueChange = { data -> registerRequest = registerRequest.copy(username = data) },
-            label = { Text("Username") },
-        )
+//        OutlinedTextField(
+//            modifier = Modifier.fillMaxWidth(),
+//            value = registerRequest.username,
+//            onValueChange = { data -> registerRequest = registerRequest.copy(username = data) },
+//            label = { Text("Username") },
+//        )
         OutlinedTextField(
             modifier = Modifier.fillMaxWidth(),
             value = registerRequest.password,

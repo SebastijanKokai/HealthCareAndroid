@@ -4,6 +4,7 @@ plugins {
     id("com.google.gms.google-services")
     id("kotlin-kapt")
     id("com.google.dagger.hilt.android")
+    id("com.google.devtools.ksp")
 }
 
 android {
@@ -60,7 +61,8 @@ dependencies {
     val hiltVersion = "2.44"
 
     implementation("androidx.room:room-runtime:$roomVersion")
-    annotationProcessor("androidx.room:room-compiler:$roomVersion")
+    ksp("androidx.room:room-compiler:$roomVersion")
+    implementation("androidx.room:room-ktx:$roomVersion")
     implementation("androidx.navigation:navigation-compose:$navVersion")
     implementation("androidx.hilt:hilt-navigation-compose:1.0.0")
     implementation("io.coil-kt:coil-compose:2.4.0")
