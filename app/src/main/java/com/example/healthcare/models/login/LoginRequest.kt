@@ -10,8 +10,4 @@ data class LoginRequest(
     fun isValid() : Boolean {
         return email.isEmailValid() && password.isPasswordValid()
     }
-
-    fun isNotEmpty(): Boolean {
-        return email.isNotEmpty() && password.isNotEmpty()
-    }
 }

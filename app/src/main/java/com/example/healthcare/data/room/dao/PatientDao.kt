@@ -8,7 +8,7 @@ import kotlinx.coroutines.flow.Flow
 @Dao
 interface PatientDao {
     @Query("SELECT * FROM patient")
-    fun getAll(): Flow<List<Patient>>
+    fun getAll(): List<Patient>
 
     @Query("SELECT * FROM patient WHERE id = :patientId")
     fun getById(patientId: String): Flow<Patient>

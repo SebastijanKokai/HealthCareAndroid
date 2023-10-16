@@ -19,13 +19,12 @@ fun fetchPatientRecords(): List<Patient> {
                 illness = "Illness$i",
                 gender = null,
                 address = null,
-                dateOfBirth = LocalDate.now().minusYears(i.toLong()),
-                lastVisit = null,
+//                dateOfBirth = LocalDate.now().minusYears(i.toLong()),
+//                lastVisit = null,
                 sleepingPattern = null,
                 physicallyActive = false,
                 smokingStatus = false,
                 diagnosis = null,
-                prescribedMedicationList = null
             )
         )
     }
@@ -42,12 +41,11 @@ fun fetchPatientById(): Patient {
         illness = "Illness1",
         gender = null,
         address = null,
-        dateOfBirth = LocalDate.now().minusYears(1),
-        lastVisit = null,
+//        dateOfBirth = LocalDate.now().minusYears(1),
+//        lastVisit = null,
         sleepingPattern = null,
         physicallyActive = false,
         smokingStatus = false,
         diagnosis = null,
-        prescribedMedicationList = null
     )
 }

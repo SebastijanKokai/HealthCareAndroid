@@ -68,13 +68,13 @@ fun LoginScreen(
         }
     )
 
-//    LaunchedEffect(key1 = loginViewModel.isLoggedIn()) {
-//        navController.navigate(Screen.HomeScreen.route) {
-//            this.popUpTo(Screen.LoginScreen.route) {
-//                this.inclusive = true
-//            }
-//        }
-//    }
+    LaunchedEffect(key1 = loginViewModel.isLoggedIn()) {
+        navController.navigate(Screen.HomeScreen.route) {
+            this.popUpTo(Screen.LoginScreen.route) {
+                this.inclusive = true
+            }
+        }
+    }
 
     LaunchedEffect(key1 = state) {
         if (state.isLoginSuccessful) {

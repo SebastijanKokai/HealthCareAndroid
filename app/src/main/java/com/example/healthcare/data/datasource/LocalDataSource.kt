@@ -2,15 +2,24 @@ package com.example.healthcare.data.datasource
 
 import com.example.healthcare.data.room.dao.PatientDao
 import com.example.healthcare.data.room.entities.Patient
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.flowOn
+import javax.inject.Inject
 
-class LocalDataSource constructor(private val patientDao: PatientDao) : DataSource {
+class LocalDataSource @Inject constructor(private val patientDao: PatientDao) : DataSource {
 
-    override fun getPatients(): Flow<List<Patient>> {
-        return patientDao.getAll()
-    }
+    override suspend fun getPatients(): Flow<List<Patient>> = flow {
+        val patients = patientDao.getAll()
+        // Fake loading
+        delay(2000)
+        emit(patients)
+    }.flowOn(Dispatchers.IO)
 
-    override fun getPatientById(id: String): Flow<Patient> {
-        return patientDao.getById(id)
+
+    override suspend fun getPatientById(id: String): Flow<Patient> {
+        TODO("Not yet implemented")
     }
 }

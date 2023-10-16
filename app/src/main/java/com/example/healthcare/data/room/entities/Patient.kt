@@ -13,13 +13,12 @@ data class Patient(
     val illness: String?,
     val gender: String?,
     val address: String?,
-    val dateOfBirth: LocalDate?,
-    val lastVisit: LocalDate?,
+//    val dateOfBirth: LocalDate?,
+//    val lastVisit: LocalDate?,
     val sleepingPattern: String?,
     val physicallyActive: Boolean?,
     val smokingStatus: Boolean?,
     val diagnosis: String?,
-    val prescribedMedicationList: List<Medication>?,
 )
 
 data class Medication(

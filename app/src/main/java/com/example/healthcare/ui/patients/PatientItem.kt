@@ -36,7 +36,7 @@ fun PatientItem(modifier: Modifier, patient: Patient) {
 //            contentScale = ContentScale.Crop
 //        )
         val formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy.")
-        val formattedDateOfBirth: String? = patient.dateOfBirth?.format(formatter)
+//        val formattedDateOfBirth: String? = patient.dateOfBirth?.format(formatter)
 
         Image(
             modifier = Modifier
@@ -49,11 +49,11 @@ fun PatientItem(modifier: Modifier, patient: Patient) {
             Text(
                 patient.firstName + " " + patient.lastName
             )
-            if (formattedDateOfBirth != null) {
-                Text(
-                    formattedDateOfBirth
-                )
-            }
+//            if (formattedDateOfBirth != null) {
+//                Text(
+//                    formattedDateOfBirth
+//                )
+//            }
             if (patient.illness != null) {
                 Text(
                     patient.illness
@@ -76,13 +76,13 @@ fun PreviewPatientItem() {
             illness = "Illness1",
             gender = null,
             address = null,
-            dateOfBirth = LocalDate.now(),
-            lastVisit = null,
+//            dateOfBirth = LocalDate.now(),
+//            lastVisit = null,
             sleepingPattern = null,
             physicallyActive = false,
             smokingStatus = false,
             diagnosis = null,
-            prescribedMedicationList = null
+//            prescribedMedicationList = null
         )
     )
 }

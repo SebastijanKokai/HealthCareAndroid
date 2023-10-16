@@ -7,7 +7,7 @@ import androidx.room.RoomDatabase
 import com.example.healthcare.data.room.dao.PatientDao
 import com.example.healthcare.data.room.entities.Patient
 
-@Database(entities = [Patient::class], version = 1)
+@Database(entities = [Patient::class], version = 1, exportSchema = false)
 abstract class AppDatabase : RoomDatabase() {
     abstract fun patientDao(): PatientDao
 
