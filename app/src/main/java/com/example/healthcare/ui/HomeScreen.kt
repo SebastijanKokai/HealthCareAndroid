@@ -77,7 +77,9 @@ fun HomeScreenList(navController: NavController, patientsList: List<Patient>) {
     ) {
         Button(
             modifier = Modifier.fillMaxWidth(),
-            onClick = {},
+            onClick = {
+                navController.navigate(Screen.PatientAddScreen.route)
+            },
 
             ) {
             Text(

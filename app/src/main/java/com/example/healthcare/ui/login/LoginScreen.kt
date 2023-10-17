@@ -45,12 +45,10 @@ import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.example.healthcare.R
 import com.example.healthcare.models.login.LoginRequest
-import com.example.healthcare.models.register.RegisterRequest
 import com.example.healthcare.navigation.Screen
 import com.example.healthcare.ui.common.ButtonWithIcon
-import com.example.healthcare.ui.common.LoginField
+import com.example.healthcare.ui.common.InputField
 import com.example.healthcare.ui.common.PasswordField
-import com.example.healthcare.ui.register.RegisterViewModel
 import com.example.healthcare.ui.theme.HealthCareTheme
 
 @Composable
@@ -113,7 +111,7 @@ fun LoginScreen(
             painter = painterResource(id = R.drawable.logo),
             contentDescription = null,
         )
-        LoginField(
+        InputField(
             modifier = Modifier.fillMaxWidth(),
             value = loginRequest.email,
             onChange = { data -> loginRequest = loginRequest.copy(email = data) },

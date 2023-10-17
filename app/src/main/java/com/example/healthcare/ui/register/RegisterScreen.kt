@@ -38,7 +38,7 @@ import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.example.healthcare.models.register.RegisterRequest
 import com.example.healthcare.navigation.Screen
-import com.example.healthcare.ui.common.LoginField
+import com.example.healthcare.ui.common.InputField
 import com.example.healthcare.ui.common.PasswordField
 
 @Composable
@@ -74,7 +74,7 @@ fun RegisterScreen(
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        LoginField(
+        InputField(
             modifier = Modifier.fillMaxWidth(),
             value = registerRequest.email,
             onChange = { data -> registerRequest = registerRequest.copy(email = data) },

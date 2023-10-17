@@ -8,6 +8,7 @@ import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.example.healthcare.ui.login.LoginScreen
 import com.example.healthcare.ui.HomeScreen
+import com.example.healthcare.ui.patients.PatientAddScreen
 import com.example.healthcare.ui.register.RegisterScreen
 import com.example.healthcare.ui.patients.PatientDetailScreen
 
@@ -32,6 +33,9 @@ fun Navigation() {
             id?.let {
                 PatientDetailScreen(patientId = id)
             }
+        }
+        composable(route = Screen.PatientAddScreen.route) {
+            PatientAddScreen()
         }
     }
 }

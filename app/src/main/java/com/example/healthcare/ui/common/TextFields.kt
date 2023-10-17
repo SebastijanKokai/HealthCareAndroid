@@ -4,7 +4,6 @@ import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Key
-import androidx.compose.material.icons.filled.Person
 import androidx.compose.material.icons.filled.Visibility
 import androidx.compose.material.icons.filled.VisibilityOff
 import androidx.compose.material3.Icon
@@ -26,23 +25,16 @@ import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 
 @Composable
-fun LoginField(
+fun InputField(
     value: String,
     onChange: (String) -> Unit,
     modifier: Modifier = Modifier,
     label: String = "Email",
     placeholder: String = "Enter your email",
-    leadingIcon: @Composable () -> Unit
+    leadingIcon: (@Composable () -> Unit)?
 ) {
 
     val focusManager = LocalFocusManager.current
-//    val leadingIcon = @Composable {
-//        Icon(
-//            Icons.Default.Person,
-//            contentDescription = "",
-//            tint = MaterialTheme.colorScheme.primary
-//        )
-//    }
 
     TextField(
         value = value,
