@@ -26,6 +26,7 @@ class LocalDataSource @Inject constructor(private val patientDao: PatientDao) : 
 
     override suspend fun insertPatient(patient: PatientEntity) {
         withContext(Dispatchers.IO) {
+            delay(1500)
             patientDao.insert(patient)
         }
     }

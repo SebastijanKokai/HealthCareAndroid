@@ -20,7 +20,6 @@ import javax.inject.Inject
 class PatientEditScreenViewModel @Inject constructor(private val repository: IPatientRepository) :
     ViewModel() {
     val formData = FormData { firstName, lastName, gender, illness ->
-        _patientEditState.value = PatientUiState.Edit(firstName, lastName, gender, illness)
     }
 
     private val _patientEditState: MutableStateFlow<PatientUiState> =
@@ -31,7 +30,7 @@ class PatientEditScreenViewModel @Inject constructor(private val repository: IPa
         _patientEditState.value = PatientUiState.Loading
 
         if (formData.isValid().not()) {
-            // Fill in user input Toast message
+            _patientEditState.value = PatientUiState.Error("Fill in patient data.")
             return
         }
 
@@ -105,32 +104,8 @@ data class FormData(val onInputChanged: (String?, String?, Gender?, String?) -> 
     )
 }
 
-//data class FormData(
-//    var firstName: String = "",
-//    var lastName: String = "",
-//    var gender: Gender = Gender.OTHER,
-//    var illness: String = "",
-//) {
-//    fun isValid(): Boolean =
-//        firstName.isNotEmpty() && lastName.isNotEmpty() && gender.value.isNotEmpty() && illness.isNotEmpty()
-//
-//    fun toDto(): PatientDto = PatientDto(
-//        firstName = firstName,
-//        lastName = lastName,
-//        gender = gender,
-//        illness = illness
-//    )
-//}
-
 sealed class PatientUiState {
     object Initial : PatientUiState()
-    data class Edit(
-        val firstName: String?,
-        val lastName: String?,
-        val gender: Gender?,
-        val illness: String?
-    ) : PatientUiState()
-
     data class Error(val message: String?) : PatientUiState()
     object Loading : PatientUiState()
 }
