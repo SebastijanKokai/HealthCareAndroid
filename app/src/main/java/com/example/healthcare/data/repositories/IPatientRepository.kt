@@ -4,6 +4,7 @@ import com.example.healthcare.data.room.entities.PatientEntity
 import kotlinx.coroutines.flow.Flow
 
 interface IPatientRepository {
-    suspend fun getAll(): Flow<List<PatientEntity>>
-    fun getById(id: String): Flow<PatientEntity>
+    suspend fun getAllLocally(): Flow<List<PatientEntity>>
+    suspend fun getByIdLocally(id: String): Flow<PatientEntity>
+    suspend fun insertLocally(patient: PatientEntity)
 }

@@ -33,6 +33,13 @@ fun PatientEditScreen(viewModel: PatientEditScreenViewModel = hiltViewModel()) {
     val patientUiState: PatientUiState by viewModel.patientEditState.collectAsState()
     var isGenderMenuExpanded by remember { mutableStateOf(false) }
 
+    when (patientUiState) {
+        PatientUiState.Initial -> viewModel.formData.resetState()
+        is PatientUiState.Edit -> {}
+        is PatientUiState.Error -> {}
+        PatientUiState.Loading -> {}
+    }
+
     Column(
         Modifier
             .fillMaxSize()
@@ -100,7 +107,7 @@ fun PatientEditScreen(viewModel: PatientEditScreenViewModel = hiltViewModel()) {
         Button(
             modifier = Modifier.fillMaxWidth(),
             onClick = {
-
+                viewModel.insertToDb()
             },
         ) {
             Text(

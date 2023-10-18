@@ -1,4 +1,4 @@
-package com.example.healthcare.ui
+package com.example.healthcare.ui.patients
 
 import android.widget.Toast
 import androidx.compose.foundation.clickable
@@ -28,12 +28,9 @@ import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.example.healthcare.data.room.entities.PatientEntity
 import com.example.healthcare.navigation.Screen
-import com.example.healthcare.ui.patients.PatientItem
-import com.example.healthcare.ui.patients.PatientState
-import com.example.healthcare.ui.patients.PatientViewModel
 
 @Composable
-fun PatientsScreen(navController: NavController, viewModel: PatientViewModel = hiltViewModel()) {
+fun PatientsScreen(navController: NavController, viewModel: PatientsViewModel = hiltViewModel()) {
     val context = LocalContext.current
     val patientsState: PatientState by viewModel.patientResponse.collectAsState()
 

@@ -8,12 +8,14 @@ import javax.inject.Inject
 
 class PatientRepository @Inject constructor(private val localDataSource: DataSource) :
     IPatientRepository {
-    override suspend fun getAll(): Flow<List<PatientEntity>> {
+    override suspend fun getAllLocally(): Flow<List<PatientEntity>> {
         // TODO Here map, filter results...
         return localDataSource.getPatients()
     }
-
-    override fun getById(id: String): Flow<PatientEntity> = flow {
+    override suspend fun getByIdLocally(id: String): Flow<PatientEntity> = flow {
         // TODO To implement
+    }
+    override suspend fun insertLocally(patient: PatientEntity) {
+        localDataSource.insertPatient(patient)
     }
 }

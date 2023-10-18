@@ -7,6 +7,7 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
+import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 class LocalDataSource @Inject constructor(private val patientDao: PatientDao) : DataSource {
@@ -21,5 +22,11 @@ class LocalDataSource @Inject constructor(private val patientDao: PatientDao) : 
 
     override suspend fun getPatientById(id: String): Flow<PatientEntity> {
         TODO("Not yet implemented")
+    }
+
+    override suspend fun insertPatient(patient: PatientEntity) {
+        withContext(Dispatchers.IO) {
+            patientDao.insert(patient)
+        }
     }
 }

@@ -14,7 +14,7 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class PatientViewModel @Inject constructor(private val repository: IPatientRepository) :
+class PatientsViewModel @Inject constructor(private val repository: IPatientRepository) :
     ViewModel() {
 
     private val _patientResponse: MutableStateFlow<PatientState> =
@@ -23,7 +23,7 @@ class PatientViewModel @Inject constructor(private val repository: IPatientRepos
 
     init {
         viewModelScope.launch {
-            repository.getAll()
+            repository.getAllLocally()
                 .catch { exception ->
                     Log.e("Exception", exception.message.toString())
                     _patientResponse.value = PatientState.Error(exception.message)

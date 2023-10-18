@@ -16,5 +16,5 @@ interface PatientDao {
     fun getById(patientId: String): Flow<PatientEntity>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insertPatient(patient: PatientEntity)
+    fun insert(patient: PatientEntity)
 }
