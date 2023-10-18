@@ -2,7 +2,7 @@ package com.example.healthcare.auth
 
 import android.content.Intent
 import android.content.IntentSender
-import com.example.healthcare.models.user.UserData
+import com.example.healthcare.data.room.entities.UserEntity
 import com.example.healthcare.models.login.LoginRequest
 import com.example.healthcare.models.login.LoginResult
 import com.example.healthcare.models.register.RegisterRequest
@@ -29,7 +29,7 @@ class AuthRepository @Inject constructor(
             ).await().user
             RegisterResult(
                 data = user?.run {
-                    UserData(
+                    UserEntity(
                         userId = uid,
                         username = displayName,
                         profilePictureUrl = photoUrl?.toString(),
@@ -55,7 +55,7 @@ class AuthRepository @Inject constructor(
                     .await().user
             LoginResult(
                 data = user?.run {
-                    UserData(
+                    UserEntity(
                         userId = uid,
                         username = displayName,
                         profilePictureUrl = photoUrl?.toString(),
@@ -94,7 +94,7 @@ class AuthRepository @Inject constructor(
             val user = firebaseAuth.signInWithCredential(googleCredentials).await().user
             LoginResult(
                 data = user?.run {
-                    UserData(
+                    UserEntity(
                         userId = uid,
                         username = displayName,
                         profilePictureUrl = photoUrl?.toString(),
@@ -123,8 +123,8 @@ class AuthRepository @Inject constructor(
         }
     }
 
-    override fun getLoggedInUser(): UserData? = firebaseAuth.currentUser?.run {
-        UserData(
+    override fun getLoggedInUser(): UserEntity? = firebaseAuth.currentUser?.run {
+        UserEntity(
             userId = uid,
             username = displayName,
             profilePictureUrl = photoUrl?.toString(),

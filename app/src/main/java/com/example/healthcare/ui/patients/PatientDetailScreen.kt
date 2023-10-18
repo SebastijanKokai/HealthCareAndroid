@@ -21,7 +21,7 @@ import com.example.healthcare.data.fetchPatientRecords
 @Composable
 fun PatientDetailScreen(patientId: String) {
     val patientData = fetchPatientRecords().find {
-       it.id == patientId
+       it.id.toString() == patientId
     }
     Column(
         modifier = Modifier.fillMaxSize(),

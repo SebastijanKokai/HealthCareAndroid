@@ -26,14 +26,14 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
-import com.example.healthcare.data.room.entities.Patient
+import com.example.healthcare.data.room.entities.PatientEntity
 import com.example.healthcare.navigation.Screen
 import com.example.healthcare.ui.patients.PatientItem
 import com.example.healthcare.ui.patients.PatientState
 import com.example.healthcare.ui.patients.PatientViewModel
 
 @Composable
-fun HomeScreen(navController: NavController, viewModel: PatientViewModel = hiltViewModel()) {
+fun PatientsScreen(navController: NavController, viewModel: PatientViewModel = hiltViewModel()) {
     val context = LocalContext.current
     val patientsState: PatientState by viewModel.patientResponse.collectAsState()
 
@@ -44,17 +44,17 @@ fun HomeScreen(navController: NavController, viewModel: PatientViewModel = hiltV
     ) {
         when (val state = patientsState) {
             is PatientState.Success ->
-                HomeScreenList(navController = navController, patientsList = state.listOfPatients)
+                PatientListScreen(navController = navController, patientsList = state.listOfPatients)
 
             is PatientState.Error -> Toast.makeText(context, state.error, Toast.LENGTH_LONG).show()
 
-            PatientState.Loading -> HomeScreenLoading()
+            PatientState.Loading -> PatientsLoadingScreen()
         }
     }
 }
 
 @Composable
-fun HomeScreenList(navController: NavController, patientsList: List<Patient>) {
+fun PatientListScreen(navController: NavController, patientsList: List<PatientEntity>) {
 
     LazyColumn(modifier = Modifier.padding(16.dp)) {
         items(patientsList) {
@@ -62,7 +62,7 @@ fun HomeScreenList(navController: NavController, patientsList: List<Patient>) {
                 navController.navigate(
                     Screen.PatientDetailScreen.route.replace(
                         oldValue = "{patient_id}",
-                        newValue = it.id
+                        newValue = it.id.toString()
                     )
                 )
             }) {
@@ -78,7 +78,7 @@ fun HomeScreenList(navController: NavController, patientsList: List<Patient>) {
         Button(
             modifier = Modifier.fillMaxWidth(),
             onClick = {
-                navController.navigate(Screen.PatientAddScreen.route)
+                navController.navigate(Screen.PatientEditScreen.route)
             },
 
             ) {
@@ -91,7 +91,7 @@ fun HomeScreenList(navController: NavController, patientsList: List<Patient>) {
 }
 
 @Composable
-fun HomeScreenLoading() {
+fun PatientsLoadingScreen() {
     CircularProgressIndicator(
         modifier = Modifier.width(64.dp),
         color = MaterialTheme.colorScheme.surfaceVariant,
@@ -99,19 +99,14 @@ fun HomeScreenLoading() {
     )
 }
 
-@Composable
-fun HomeScreenErrorState() {
-
-}
-
 @Preview(showBackground = true)
 @Composable
 fun HomeScreenListPreview() {
-    HomeScreenList(rememberNavController(), emptyList())
+    PatientListScreen(rememberNavController(), emptyList())
 }
 
 @Preview(showBackground = true)
 @Composable
 fun HomeScreenLoadingPreview() {
-    HomeScreenLoading()
+    PatientsLoadingScreen()
 }

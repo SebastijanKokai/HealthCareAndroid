@@ -16,13 +16,13 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.example.healthcare.data.room.entities.Patient
-import java.time.LocalDate
+import com.example.healthcare.data.Gender
+import com.example.healthcare.data.room.entities.PatientEntity
 import java.time.format.DateTimeFormatter
 
 
 @Composable
-fun PatientItem(modifier: Modifier, patient: Patient) {
+fun PatientItem(modifier: Modifier, patient: PatientEntity) {
     Row(
         modifier.fillMaxWidth(),
         verticalAlignment = Alignment.CenterVertically,
@@ -68,21 +68,17 @@ fun PatientItem(modifier: Modifier, patient: Patient) {
 fun PreviewPatientItem() {
     PatientItem(
         Modifier.padding(vertical = 8.dp),
-        Patient(
-            id = "1",
+        PatientEntity(
             firstName = "Name1",
             lastName = "LastName1",
             photoUrl = "https://randomuser.me/api/portraits/med/women/57.jpg",
             illness = "Illness1",
-            gender = null,
+            gender = Gender.OTHER,
             address = null,
-//            dateOfBirth = LocalDate.now(),
-//            lastVisit = null,
             sleepingPattern = null,
             physicallyActive = false,
             smokingStatus = false,
             diagnosis = null,
-//            prescribedMedicationList = null
         )
     )
 }

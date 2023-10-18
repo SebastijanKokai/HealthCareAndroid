@@ -55,7 +55,7 @@ fun RegisterScreen(
             Toast.makeText(context, "Registered successfully.", Toast.LENGTH_LONG)
                 .show()
             resetRegisterRequest(registerRequest)
-            navController.navigate(Screen.HomeScreen.route) {
+            navController.navigate(Screen.PatientsScreen.route) {
                 this.popUpTo(Screen.LoginScreen.route) {
                     this.inclusive = true
                 }

@@ -15,21 +15,22 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.example.healthcare.models.dto.Gender
-import com.example.healthcare.models.dto.PatientDto
+import androidx.hilt.navigation.compose.hiltViewModel
+import com.example.healthcare.data.Gender
 import com.example.healthcare.ui.common.InputField
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.setValue
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun PatientAddScreen() {
-    var patientAddRequest by remember { mutableStateOf(PatientDto()) }
+fun PatientEditScreen(viewModel: PatientEditScreenViewModel = hiltViewModel()) {
+    val patientUiState: PatientUiState by viewModel.patientEditState.collectAsState()
     var isGenderMenuExpanded by remember { mutableStateOf(false) }
 
     Column(
@@ -39,16 +40,16 @@ fun PatientAddScreen() {
     ) {
         InputField(
             modifier = Modifier.fillMaxWidth(),
-            value = patientAddRequest.firstName,
-            onChange = { data -> patientAddRequest = patientAddRequest.copy(firstName = data) },
+            value = viewModel.formData.firstName.value.orEmpty(),
+            onChange = { data -> viewModel.formData.onFirstNameChanged(data) },
             label = "First name",
             placeholder = "Enter first name",
             leadingIcon = null
         )
         InputField(
             modifier = Modifier.fillMaxWidth(),
-            value = patientAddRequest.lastName,
-            onChange = { data -> patientAddRequest = patientAddRequest.copy(lastName = data) },
+            value = viewModel.formData.lastName.value.orEmpty(),
+            onChange = { data -> viewModel.formData.onLastNameChanged(data) },
             label = "Last name",
             placeholder = "Enter last name",
             leadingIcon = null
@@ -63,7 +64,7 @@ fun PatientAddScreen() {
                     .menuAnchor()
                     .fillMaxWidth(),
                 readOnly = true,
-                value = patientAddRequest.gender.value,
+                value = viewModel.formData.gender.value?.value ?: "Unknown",
                 onValueChange = { },
                 label = { Text("Please specify gender") },
                 trailingIcon = {
@@ -83,15 +84,15 @@ fun PatientAddScreen() {
                         text = { Text(text = label.value) },
                         onClick = {
                             isGenderMenuExpanded = false
-                            patientAddRequest = patientAddRequest.copy(gender = label)
+                            viewModel.formData.onGenderChanged(label)
                         })
                 }
             }
         }
         InputField(
             modifier = Modifier.fillMaxWidth(),
-            value = patientAddRequest.illness,
-            onChange = { data -> patientAddRequest = patientAddRequest.copy(illness = data) },
+            value = viewModel.formData.illness.value.orEmpty(),
+            onChange = { data -> viewModel.formData.onIllnessChanged(data) },
             label = "Illness",
             placeholder = "Enter illness",
             leadingIcon = null
@@ -99,9 +100,7 @@ fun PatientAddScreen() {
         Button(
             modifier = Modifier.fillMaxWidth(),
             onClick = {
-                if (patientAddRequest.isValid()) {
 
-                }
             },
         ) {
             Text(
@@ -114,5 +113,5 @@ fun PatientAddScreen() {
 @Composable
 @Preview
 fun PatientAddScreenPreview() {
-    PatientAddScreen()
+    PatientEditScreen()
 }

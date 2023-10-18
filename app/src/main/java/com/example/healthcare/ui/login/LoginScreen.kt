@@ -67,7 +67,7 @@ fun LoginScreen(
     )
 
     LaunchedEffect(key1 = loginViewModel.isLoggedIn()) {
-        navController.navigate(Screen.HomeScreen.route) {
+        navController.navigate(Screen.PatientsScreen.route) {
             this.popUpTo(Screen.LoginScreen.route) {
                 this.inclusive = true
             }
@@ -81,7 +81,7 @@ fun LoginScreen(
                 "Login successful",
                 Toast.LENGTH_LONG
             ).show()
-            navController.navigate(Screen.HomeScreen.route) {
+            navController.navigate(Screen.PatientsScreen.route) {
                 this.popUpTo(Screen.LoginScreen.route) {
                     this.inclusive = true
                 }

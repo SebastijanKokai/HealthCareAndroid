@@ -7,8 +7,8 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.example.healthcare.ui.login.LoginScreen
-import com.example.healthcare.ui.HomeScreen
-import com.example.healthcare.ui.patients.PatientAddScreen
+import com.example.healthcare.ui.PatientsScreen
+import com.example.healthcare.ui.patients.PatientEditScreen
 import com.example.healthcare.ui.register.RegisterScreen
 import com.example.healthcare.ui.patients.PatientDetailScreen
 
@@ -22,8 +22,8 @@ fun Navigation() {
         composable(route = Screen.RegisterScreen.route) {
             RegisterScreen(navController)
         }
-        composable(route = Screen.HomeScreen.route) {
-            HomeScreen(navController)
+        composable(route = Screen.PatientsScreen.route) {
+            PatientsScreen(navController)
         }
         composable(
             route = Screen.PatientDetailScreen.route,
@@ -34,8 +34,8 @@ fun Navigation() {
                 PatientDetailScreen(patientId = id)
             }
         }
-        composable(route = Screen.PatientAddScreen.route) {
-            PatientAddScreen()
+        composable(route = Screen.PatientEditScreen.route) {
+            PatientEditScreen()
         }
     }
 }

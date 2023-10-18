@@ -1,23 +1,21 @@
 package com.example.healthcare.data
 
-import com.example.healthcare.data.room.entities.Patient
-import java.time.LocalDate
+import com.example.healthcare.data.room.entities.PatientEntity
 
 
-fun fetchPatientRecords(): List<Patient> {
+fun fetchPatientRecords(): List<PatientEntity> {
     val numberOfPatients = 10
     val url = "https://randomuser.me/api/?results=$numberOfPatients"
-    val patientList: ArrayList<Patient> = ArrayList()
+    val patientList: ArrayList<PatientEntity> = ArrayList()
 
     for (i in 1..10) {
         patientList.add(
-            Patient(
-                id = "$i",
+            PatientEntity(
                 firstName = "Name$i",
                 lastName = "LastName$i",
                 photoUrl = "https://randomuser.me/api/portraits/med/women/57.jpg",
                 illness = "Illness$i",
-                gender = null,
+                gender = Gender.OTHER,
                 address = null,
 //                dateOfBirth = LocalDate.now().minusYears(i.toLong()),
 //                lastVisit = null,
@@ -32,14 +30,13 @@ fun fetchPatientRecords(): List<Patient> {
     return patientList
 }
 
-fun fetchPatientById(): Patient {
-    return Patient(
-        id = "1",
+fun fetchPatientById(): PatientEntity {
+    return PatientEntity(
         firstName = "Name1",
         lastName = "LastName1",
         photoUrl = "https://randomuser.me/api/portraits/med/women/57.jpg",
         illness = "Illness1",
-        gender = null,
+        gender = Gender.OTHER,
         address = null,
 //        dateOfBirth = LocalDate.now().minusYears(1),
 //        lastVisit = null,

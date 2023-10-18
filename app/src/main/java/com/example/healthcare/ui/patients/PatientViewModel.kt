@@ -1,9 +1,10 @@
 package com.example.healthcare.ui.patients
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.healthcare.data.repositories.IPatientRepository
-import com.example.healthcare.data.room.entities.Patient
+import com.example.healthcare.data.room.entities.PatientEntity
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -24,6 +25,7 @@ class PatientViewModel @Inject constructor(private val repository: IPatientRepos
         viewModelScope.launch {
             repository.getAll()
                 .catch { exception ->
+                    Log.e("Exception", exception.message.toString())
                     _patientResponse.value = PatientState.Error(exception.message)
                 }
                 .collect { patients ->
@@ -35,7 +37,7 @@ class PatientViewModel @Inject constructor(private val repository: IPatientRepos
 }
 
 sealed class PatientState {
-    data class Success(val listOfPatients: List<Patient>) : PatientState()
+    data class Success(val listOfPatients: List<PatientEntity>) : PatientState()
     data class Error(val error: String?) : PatientState()
     object Loading : PatientState()
 }
