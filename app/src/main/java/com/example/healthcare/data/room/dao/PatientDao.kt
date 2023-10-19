@@ -1,6 +1,7 @@
 package com.example.healthcare.data.room.dao
 
 import androidx.room.Dao
+import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
@@ -17,4 +18,7 @@ interface PatientDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insert(patient: PatientEntity)
+
+    @Query("DELETE FROM patient WHERE id = :patientId")
+    fun delete(patientId: String)
 }

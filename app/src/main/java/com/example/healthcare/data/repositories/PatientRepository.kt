@@ -12,10 +12,16 @@ class PatientRepository @Inject constructor(private val localDataSource: DataSou
         // TODO Here map, filter results...
         return localDataSource.getPatients()
     }
+
     override suspend fun getByIdLocally(id: String): Flow<PatientEntity> = flow {
         // TODO To implement
     }
+
     override suspend fun insertLocally(patient: PatientEntity) {
         localDataSource.insertPatient(patient)
+    }
+
+    override suspend fun deleteLocally(id: String) {
+        localDataSource.deletePatient(id)
     }
 }

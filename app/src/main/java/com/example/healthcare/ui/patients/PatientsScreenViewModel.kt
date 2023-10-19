@@ -14,7 +14,7 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class PatientsViewModel @Inject constructor(private val repository: IPatientRepository) :
+class PatientsScreenViewModel @Inject constructor(private val repository: IPatientRepository) :
     ViewModel() {
 
     private val _patientResponse: MutableStateFlow<PatientState> =
@@ -22,6 +22,10 @@ class PatientsViewModel @Inject constructor(private val repository: IPatientRepo
     val patientResponse: StateFlow<PatientState> = _patientResponse.asStateFlow()
 
     init {
+        getAllLocally()
+    }
+
+    private fun getAllLocally() {
         viewModelScope.launch {
             repository.getAllLocally()
                 .catch { exception ->
@@ -32,6 +36,18 @@ class PatientsViewModel @Inject constructor(private val repository: IPatientRepo
                     _patientResponse.value =
                         PatientState.Success(patients)
                 }
+        }
+    }
+
+    fun deletePatient(id: String) {
+        viewModelScope.launch {
+            runCatching {
+                repository.deleteLocally(id)
+            }.onSuccess {
+                getAllLocally()
+            }.onFailure {
+                _patientResponse.value = PatientState.Error(it.message)
+            }
         }
     }
 }

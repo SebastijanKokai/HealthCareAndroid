@@ -15,7 +15,7 @@ class LocalDataSource @Inject constructor(private val patientDao: PatientDao) : 
     override suspend fun getPatients(): Flow<List<PatientEntity>> = flow {
         val patients = patientDao.getAll()
         // Fake loading
-        delay(2000)
+        delay(1500)
         emit(patients)
     }.flowOn(Dispatchers.IO)
 
@@ -28,6 +28,12 @@ class LocalDataSource @Inject constructor(private val patientDao: PatientDao) : 
         withContext(Dispatchers.IO) {
             delay(1500)
             patientDao.insert(patient)
+        }
+    }
+
+    override suspend fun deletePatient(id: String) {
+        withContext(Dispatchers.IO) {
+            patientDao.delete(id)
         }
     }
 }
