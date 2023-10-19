@@ -9,6 +9,8 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Person
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -23,41 +25,37 @@ import java.time.format.DateTimeFormatter
 
 @Composable
 fun PatientItem(modifier: Modifier, patient: PatientEntity) {
-    Row(
-        modifier.fillMaxWidth(),
-        verticalAlignment = Alignment.CenterVertically,
+    Card(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(8.dp),
+        elevation = CardDefaults.cardElevation(
+            defaultElevation = 4.dp
+        )
     ) {
-//        AsyncImage(
-//            modifier = Modifier
-//                .size(150.dp)
-//                .clip(CircleShape),
-//            model = patientData.photoUrl,
-//            contentDescription = "Patient picture",
-//            contentScale = ContentScale.Crop
-//        )
-        val formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy.")
+        Row(
+            modifier.fillMaxWidth(),
+            verticalAlignment = Alignment.CenterVertically,
+        ) {
+            val formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy.")
 //        val formattedDateOfBirth: String? = patient.dateOfBirth?.format(formatter)
 
-        Image(
-            modifier = Modifier
-                .size(50.dp)
-                .clip(CircleShape),
-            imageVector = Icons.Default.Person,
-            contentDescription = ""
-        )
-        Column {
-            Text(
-                patient.firstName + " " + patient.lastName
+            Image(
+                modifier = Modifier
+                    .size(50.dp)
+                    .clip(CircleShape),
+                imageVector = Icons.Default.Person,
+                contentDescription = ""
             )
-//            if (formattedDateOfBirth != null) {
-//                Text(
-//                    formattedDateOfBirth
-//                )
-//            }
-            if (patient.illness != null) {
+            Column {
                 Text(
-                    patient.illness
+                    patient.firstName + " " + patient.lastName
                 )
+                if (patient.illness != null) {
+                    Text(
+                        patient.illness
+                    )
+                }
             }
         }
     }

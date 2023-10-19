@@ -1,6 +1,7 @@
 package com.example.healthcare.ui.common
 
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.KeyboardArrowDown
 import androidx.compose.material3.DropdownMenuItem
@@ -13,11 +14,13 @@ import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
 import com.example.healthcare.data.Gender
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun <T> DropdownMenu(
+    modifier: Modifier,
     items: Array<T>,
     hintText: String,
     isExpanded: Boolean,
@@ -28,6 +31,7 @@ fun <T> DropdownMenu(
     onItemClick: (label: T) -> Unit
 ) {
     ExposedDropdownMenuBox(
+        modifier = modifier,
         expanded = isExpanded,
         onExpandedChange = {
             onExpandedChange()
@@ -85,6 +89,7 @@ fun <T> DropdownMenu(
 @Preview
 fun DropdownMenuPreview() {
     DropdownMenu(
+        Modifier,
         arrayOf("First item", "Second item"),
         "Please specify",
         false,

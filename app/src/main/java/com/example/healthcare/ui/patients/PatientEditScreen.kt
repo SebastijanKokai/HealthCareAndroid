@@ -1,12 +1,12 @@
 package com.example.healthcare.ui.patients
 
 import android.widget.Toast
+import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -14,6 +14,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -49,7 +50,6 @@ fun PatientEditScreen(viewModel: PatientEditScreenViewModel = hiltViewModel()) {
     PatientEditContentScreen(viewModel, isLoading)
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun PatientEditContentScreen(viewModel: PatientEditScreenViewModel, isLoading: Boolean) {
     var isGenderMenuExpanded by rememberSaveable { mutableStateOf(false) }
@@ -60,7 +60,9 @@ fun PatientEditContentScreen(viewModel: PatientEditScreenViewModel, isLoading: B
             .padding(12.dp)
     ) {
         InputField(
-            modifier = Modifier.fillMaxWidth(),
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(bottom = 8.dp),
             value = viewModel.formData.firstName.value.orEmpty(),
             onChange = { data -> viewModel.formData.onFirstNameChanged(data) },
             label = "First name",
@@ -68,7 +70,9 @@ fun PatientEditContentScreen(viewModel: PatientEditScreenViewModel, isLoading: B
             leadingIcon = null
         )
         InputField(
-            modifier = Modifier.fillMaxWidth(),
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(bottom = 8.dp),
             value = viewModel.formData.lastName.value.orEmpty(),
             onChange = { data -> viewModel.formData.onLastNameChanged(data) },
             label = "Last name",
@@ -76,6 +80,7 @@ fun PatientEditContentScreen(viewModel: PatientEditScreenViewModel, isLoading: B
             leadingIcon = null
         )
         DropdownMenu(
+            modifier = Modifier.padding(bottom = 8.dp),
             items = Gender.values(),
             hintText = "Please specify gender",
             isExpanded = isGenderMenuExpanded,
@@ -89,7 +94,9 @@ fun PatientEditContentScreen(viewModel: PatientEditScreenViewModel, isLoading: B
             }
         )
         InputField(
-            modifier = Modifier.fillMaxWidth(),
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(bottom = 8.dp),
             value = viewModel.formData.illness.value.orEmpty(),
             onChange = { data -> viewModel.formData.onIllnessChanged(data) },
             label = "Illness",
