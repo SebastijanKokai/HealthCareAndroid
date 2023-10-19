@@ -5,19 +5,18 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Warning
-import androidx.compose.material3.Button
 import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.FloatingActionButton
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -86,44 +85,43 @@ fun PatientListScreen(
         icon = Icons.Default.Warning
     )
 
-    LazyColumn(modifier = Modifier.padding(16.dp)) {
-        items(patientsList) {
-            Box(modifier = Modifier.clickable {
-                navController.navigate(
-                    Screen.PatientDetailScreen.route.replace(
-                        oldValue = "{patient_id}",
-                        newValue = it.id.toString()
+    Box(modifier = Modifier.padding(16.dp)) {
+        LazyColumn {
+            items(patientsList) {
+                Box(modifier = Modifier.clickable {
+                    navController.navigate(
+                        Screen.PatientDetailScreen.route.replace(
+                            oldValue = "{patient_id}",
+                            newValue = it.id.toString()
+                        )
                     )
-                )
-            }) {
-                PatientItem(
-                    patient = it,
-                    modifier = Modifier.padding(vertical = 8.dp),
-                    onEdit = {
+                }) {
+                    PatientItem(
+                        patient = it,
+                        modifier = Modifier.padding(vertical = 8.dp),
+                        onEdit = {
 
-                    },
-                    onDelete = {
-                        patientId = it.id.toString()
-                    }
-                )
+                        },
+                        onDelete = {
+                            patientId = it.id.toString()
+                        }
+                    )
+                }
             }
         }
-    }
-    Column(
-        modifier = Modifier
-            .fillMaxHeight()
-            .padding(16.dp),
-        horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.Bottom
-    ) {
-        Button(
-            modifier = Modifier.fillMaxWidth(),
-            onClick = {
-                navController.navigate(Screen.PatientEditScreen.route)
-            }) {
-            Text(
-                text = "Add patient"
-            )
+
+        Column(
+            modifier = Modifier.align(Alignment.BottomEnd)
+        ) {
+            FloatingActionButton(
+                onClick = {
+                    navController.navigate(Screen.PatientEditScreen.route)
+                },
+                containerColor = MaterialTheme.colorScheme.secondaryContainer,
+                contentColor = MaterialTheme.colorScheme.secondary
+            ) {
+                Icon(Icons.Filled.Add, "Button add patient")
+            }
         }
     }
 }
