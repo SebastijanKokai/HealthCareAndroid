@@ -14,9 +14,11 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Warning
 import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.DrawerValue
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.rememberDrawerState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -32,33 +34,42 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.example.healthcare.data.room.entities.PatientEntity
+import com.example.healthcare.navigation.NavDrawer
 import com.example.healthcare.navigation.Screen
 import com.example.healthcare.ui.common.Alert
 
 @Composable
 fun PatientsScreen(
     navController: NavController,
-    viewModel: PatientsScreenViewModel = hiltViewModel()
+    viewModel: PatientsScreenViewModel = hiltViewModel(),
 ) {
     val context = LocalContext.current
     val patientsState: PatientState by viewModel.patientResponse.collectAsState()
 
-    Column(
-        modifier = Modifier.fillMaxSize(),
-        verticalArrangement = Arrangement.Center,
-        horizontalAlignment = Alignment.CenterHorizontally
+    val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
+
+    NavDrawer(
+        drawerState = drawerState,
+        onLogout = {}
     ) {
-        when (val state = patientsState) {
-            is PatientState.Success ->
-                PatientListScreen(
-                    navController = navController,
-                    patientsList = state.listOfPatients,
-                    viewModel
-                )
+        Column(
+            modifier = Modifier.fillMaxSize(),
+            verticalArrangement = Arrangement.Center,
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            when (val state = patientsState) {
+                is PatientState.Success ->
+                    PatientListScreen(
+                        navController = navController,
+                        patientsList = state.listOfPatients,
+                        viewModel
+                    )
 
-            is PatientState.Error -> Toast.makeText(context, state.error, Toast.LENGTH_LONG).show()
+                is PatientState.Error -> Toast.makeText(context, state.error, Toast.LENGTH_LONG)
+                    .show()
 
-            PatientState.Loading -> PatientsLoadingScreen()
+                PatientState.Loading -> PatientsLoadingScreen()
+            }
         }
     }
 }
