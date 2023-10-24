@@ -1,4 +1,4 @@
-package com.example.healthcare.data.modules
+package com.example.healthcare.modules
 
 import dagger.Module
 import dagger.Provides

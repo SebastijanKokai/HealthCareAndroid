@@ -1,8 +1,9 @@
-package com.example.healthcare.data.repositories
+package com.example.healthcare.modules
 
 import com.example.healthcare.data.datasource.DataSource
 import com.example.healthcare.data.datasource.LocalDataSource
-import com.example.healthcare.data.modules.IoDispatcher
+import com.example.healthcare.data.repositories.IPatientRepository
+import com.example.healthcare.data.repositories.PatientRepository
 import com.example.healthcare.data.room.dao.PatientDao
 import dagger.Module
 import dagger.Provides

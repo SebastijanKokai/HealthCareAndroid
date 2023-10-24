@@ -1,7 +1,9 @@
-package com.example.healthcare.auth
+package com.example.healthcare.modules
 
 import android.content.Context
 import com.example.healthcare.BuildConfig
+import com.example.healthcare.auth.AuthRepository
+import com.example.healthcare.auth.IAuthRepository
 import com.google.android.gms.auth.api.identity.BeginSignInRequest
 import com.google.android.gms.auth.api.identity.Identity
 import com.google.firebase.auth.ktx.auth

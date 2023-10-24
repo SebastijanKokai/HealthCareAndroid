@@ -1,7 +1,8 @@
-package com.example.healthcare.data.room
+package com.example.healthcare.modules
 
 import android.content.Context
 import androidx.room.Room
+import com.example.healthcare.data.room.AppDatabase
 import com.example.healthcare.data.room.dao.PatientDao
 import dagger.Module
 import dagger.Provides
