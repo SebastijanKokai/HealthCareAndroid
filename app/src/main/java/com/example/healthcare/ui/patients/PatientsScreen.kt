@@ -50,7 +50,14 @@ fun PatientsScreen(
 
     NavDrawer(
         drawerState = drawerState,
-        onLogout = {}
+        onLogout = {
+            viewModel.logout()
+            navController.navigate(Screen.PatientsScreen.route) {
+                this.popUpTo(Screen.LoginScreen.route) {
+                    inclusive = true
+                }
+            }
+        }
     ) {
         Column(
             modifier = Modifier.fillMaxSize(),

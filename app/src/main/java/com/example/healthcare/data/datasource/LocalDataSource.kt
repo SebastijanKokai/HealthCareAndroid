@@ -1,7 +1,9 @@
 package com.example.healthcare.data.datasource
 
+import com.example.healthcare.data.modules.IoDispatcher
 import com.example.healthcare.data.room.dao.PatientDao
 import com.example.healthcare.data.room.entities.PatientEntity
+import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
@@ -10,14 +12,17 @@ import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
-class LocalDataSource @Inject constructor(private val patientDao: PatientDao) : DataSource {
+class LocalDataSource @Inject constructor(
+    private val patientDao: PatientDao,
+    private val defaultDispatcher: CoroutineDispatcher
+) : DataSource {
 
     override suspend fun getPatients(): Flow<List<PatientEntity>> = flow {
         val patients = patientDao.getAll()
         // Fake loading
         delay(1500)
         emit(patients)
-    }.flowOn(Dispatchers.IO)
+    }.flowOn(defaultDispatcher)
 
 
     override suspend fun getPatientById(id: String): Flow<PatientEntity> {
@@ -25,14 +30,14 @@ class LocalDataSource @Inject constructor(private val patientDao: PatientDao) : 
     }
 
     override suspend fun insertPatient(patient: PatientEntity) {
-        withContext(Dispatchers.IO) {
+        withContext(defaultDispatcher) {
             delay(1500)
             patientDao.insert(patient)
         }
     }
 
     override suspend fun deletePatient(id: String) {
-        withContext(Dispatchers.IO) {
+        withContext(defaultDispatcher) {
             patientDao.delete(id)
         }
     }
