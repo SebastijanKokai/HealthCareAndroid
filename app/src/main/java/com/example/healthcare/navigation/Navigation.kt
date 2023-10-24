@@ -11,6 +11,7 @@ import com.example.healthcare.ui.patients.PatientsScreen
 import com.example.healthcare.ui.patients.PatientEditScreen
 import com.example.healthcare.ui.register.RegisterScreen
 import com.example.healthcare.ui.patients.PatientDetailScreen
+import com.example.healthcare.ui.profile.ProfileScreen
 
 @Composable
 fun Navigation() {
@@ -36,6 +37,9 @@ fun Navigation() {
         }
         composable(route = Screen.PatientEditScreen.route) {
             PatientEditScreen()
+        }
+        composable(route = Screen.ProfileScreen.route) {
+            ProfileScreen()
         }
     }
 }
