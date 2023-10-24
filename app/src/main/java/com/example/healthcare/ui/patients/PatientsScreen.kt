@@ -50,6 +50,8 @@ fun PatientsScreen(
 
     NavDrawer(
         drawerState = drawerState,
+        onHome = {},
+        onProfile = {},
         onLogout = {
             viewModel.logout()
             navController.navigate(Screen.PatientsScreen.route) {
