@@ -55,11 +55,7 @@ fun RegisterScreen(
             Toast.makeText(context, "Registered successfully.", Toast.LENGTH_LONG)
                 .show()
             resetRegisterRequest(registerRequest)
-            navController.navigate(Screen.PatientsScreen.route) {
-                this.popUpTo(Screen.LoginScreen.route) {
-                    this.inclusive = true
-                }
-            }
+            navController.navigate(Screen.Main.route)
         } else if (state.registerError != null) {
             Toast.makeText(context, state.registerError, Toast.LENGTH_LONG)
                 .show()
@@ -113,8 +109,8 @@ fun RegisterScreen(
             ClickableText(modifier = Modifier.padding(start = 8.dp, end = 8.dp),
                 text = AnnotatedString("Login"),
                 onClick = {
-                    navController.navigate(Screen.LoginScreen.route) {
-                        popUpTo(Screen.LoginScreen.route) {
+                    navController.navigate(Screen.Login.route) {
+                        popUpTo(Screen.Login.route) {
                             inclusive = true
                         }
                     }

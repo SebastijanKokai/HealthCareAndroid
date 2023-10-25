@@ -23,6 +23,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
@@ -37,14 +38,17 @@ import com.example.healthcare.data.room.entities.PatientEntity
 import com.example.healthcare.navigation.NavDrawer
 import com.example.healthcare.navigation.Screen
 import com.example.healthcare.ui.common.Alert
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
 @Composable
-fun PatientsScreen(
+fun HomeScreen(
     navController: NavController,
     viewModel: PatientsScreenViewModel = hiltViewModel(),
 ) {
     val context = LocalContext.current
     val patientsState: PatientState by viewModel.patientResponse.collectAsState()
+    val coroutineScope = rememberCoroutineScope()
 
     val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
 
@@ -52,14 +56,12 @@ fun PatientsScreen(
         drawerState = drawerState,
         onHome = {},
         onProfile = {
-            navController.navigate(Screen.ProfileScreen.route)
+            navController.navigate(Screen.Profile.route)
         },
         onLogout = {
-            viewModel.logout()
-            navController.navigate(Screen.PatientsScreen.route) {
-                this.popUpTo(Screen.LoginScreen.route) {
-                    inclusive = true
-                }
+            coroutineScope.launch {
+                viewModel.logout()
+                navController.navigate(Screen.Auth.route)
             }
         }
     ) {
@@ -79,7 +81,7 @@ fun PatientsScreen(
                 is PatientState.Error -> Toast.makeText(context, state.error, Toast.LENGTH_LONG)
                     .show()
 
-                PatientState.Loading -> PatientsLoadingScreen()
+                PatientState.Loading -> LoadingScreen()
             }
         }
     }
@@ -112,7 +114,7 @@ fun PatientListScreen(
             items(patientsList) {
                 Box(modifier = Modifier.clickable {
                     navController.navigate(
-                        Screen.PatientDetailScreen.route.replace(
+                        Screen.PatientDetail.route.replace(
                             oldValue = "{patient_id}",
                             newValue = it.id.toString()
                         )
@@ -137,7 +139,7 @@ fun PatientListScreen(
         ) {
             FloatingActionButton(
                 onClick = {
-                    navController.navigate(Screen.PatientEditScreen.route)
+                    navController.navigate(Screen.PatientEdit.route)
                 },
                 containerColor = MaterialTheme.colorScheme.secondaryContainer,
                 contentColor = MaterialTheme.colorScheme.secondary
@@ -149,7 +151,7 @@ fun PatientListScreen(
 }
 
 @Composable
-fun PatientsLoadingScreen() {
+fun LoadingScreen() {
     CircularProgressIndicator(
         modifier = Modifier.width(64.dp),
         color = MaterialTheme.colorScheme.surfaceVariant,
@@ -166,5 +168,5 @@ fun HomeScreenListPreview() {
 @Preview(showBackground = true)
 @Composable
 fun HomeScreenLoadingPreview() {
-    PatientsLoadingScreen()
+    LoadingScreen()
 }

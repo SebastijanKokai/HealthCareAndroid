@@ -1,6 +1,7 @@
 package com.example.healthcare.ui.login
 
 import android.app.Activity.RESULT_OK
+import android.util.Log
 import androidx.activity.compose.ManagedActivityResultLauncher
 import androidx.activity.result.ActivityResult
 import androidx.activity.result.IntentSenderRequest
@@ -23,6 +24,10 @@ class LoginViewModel @Inject constructor(private val authRepository: IAuthReposi
 
     private val _state = MutableStateFlow(LoginState())
     val state = _state.asStateFlow()
+
+    init {
+        checkLoggedIn()
+    }
 
     fun googleLogin(launcher: ManagedActivityResultLauncher<IntentSenderRequest, ActivityResult>) {
         viewModelScope.launch {
@@ -66,7 +71,12 @@ class LoginViewModel @Inject constructor(private val authRepository: IAuthReposi
         _state.update { LoginState() }
     }
 
-    fun isLoggedIn(): Boolean {
-        return authRepository.getLoggedInUser() != null
+    private fun checkLoggedIn() {
+        _state.update {
+            it.copy(
+                isLoginSuccessful = authRepository.getLoggedInUser() != null,
+                loginError = ""
+            )
+        }
     }
 }

@@ -66,14 +66,6 @@ fun LoginScreen(
         }
     )
 
-    LaunchedEffect(key1 = loginViewModel.isLoggedIn()) {
-        navController.navigate(Screen.PatientsScreen.route) {
-            this.popUpTo(Screen.LoginScreen.route) {
-                this.inclusive = true
-            }
-        }
-    }
-
     LaunchedEffect(key1 = state) {
         if (state.isLoginSuccessful) {
             Toast.makeText(
@@ -81,11 +73,7 @@ fun LoginScreen(
                 "Login successful",
                 Toast.LENGTH_LONG
             ).show()
-            navController.navigate(Screen.PatientsScreen.route) {
-                this.popUpTo(Screen.LoginScreen.route) {
-                    this.inclusive = true
-                }
-            }
+            navController.navigate(Screen.Main.route)
         } else if (state.loginError != null) {
             Toast.makeText(
                 context,
@@ -162,7 +150,7 @@ fun LoginScreen(
                 modifier = Modifier.padding(start = 8.dp, end = 8.dp),
                 text = AnnotatedString("Sign up"),
                 onClick = {
-                    navController.navigate(Screen.RegisterScreen.route)
+                    navController.navigate(Screen.Register.route)
                 })
         }
     }
