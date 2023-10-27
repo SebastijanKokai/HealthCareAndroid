@@ -35,6 +35,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.example.healthcare.data.room.entities.PatientEntity
+import com.example.healthcare.navigation.AUTH_GRAPH_ROUTE
 import com.example.healthcare.navigation.NavDrawer
 import com.example.healthcare.navigation.Screen
 import com.example.healthcare.ui.common.Alert
@@ -51,7 +52,7 @@ fun HomeScreen(
     val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
 
     if (!isLoggedIn) {
-        navController.navigate(Screen.Auth.route)
+        navController.navigate(AUTH_GRAPH_ROUTE)
     }
 
     NavDrawer(

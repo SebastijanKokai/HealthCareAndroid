@@ -37,6 +37,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.example.healthcare.models.register.RegisterRequest
+import com.example.healthcare.navigation.MAIN_GRAPH_ROUTE
 import com.example.healthcare.navigation.Screen
 import com.example.healthcare.ui.common.InputField
 import com.example.healthcare.ui.common.PasswordField
@@ -55,7 +56,7 @@ fun RegisterScreen(
             Toast.makeText(context, "Registered successfully.", Toast.LENGTH_LONG)
                 .show()
             resetRegisterRequest(registerRequest)
-            navController.navigate(Screen.Main.route)
+            navController.navigate(MAIN_GRAPH_ROUTE)
         } else if (state.registerError != null) {
             Toast.makeText(context, state.registerError, Toast.LENGTH_LONG)
                 .show()

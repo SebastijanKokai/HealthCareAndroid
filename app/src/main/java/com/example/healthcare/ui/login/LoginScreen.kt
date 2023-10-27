@@ -45,6 +45,7 @@ import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.example.healthcare.R
 import com.example.healthcare.models.login.LoginRequest
+import com.example.healthcare.navigation.MAIN_GRAPH_ROUTE
 import com.example.healthcare.navigation.Screen
 import com.example.healthcare.ui.common.ButtonWithIcon
 import com.example.healthcare.ui.common.InputField
@@ -73,7 +74,7 @@ fun LoginScreen(
                 "Login successful",
                 Toast.LENGTH_LONG
             ).show()
-            navController.navigate(Screen.Main.route)
+            navController.navigate(MAIN_GRAPH_ROUTE)
         } else if (state.loginError != null && state.loginError!!.isNotEmpty()) {
             Toast.makeText(
                 context,
