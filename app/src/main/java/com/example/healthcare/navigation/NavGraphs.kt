@@ -8,6 +8,7 @@ import androidx.navigation.navArgument
 import androidx.navigation.navigation
 import com.example.healthcare.ui.login.LoginScreen
 import com.example.healthcare.ui.patients.HomeScreen
+import com.example.healthcare.ui.patients.MainComposable
 import com.example.healthcare.ui.patients.PatientDetailScreen
 import com.example.healthcare.ui.patients.PatientEditScreen
 import com.example.healthcare.ui.profile.ProfileScreen
@@ -33,7 +34,7 @@ fun NavGraphBuilder.mainNavGraph(navController: NavController) {
         route = MAIN_GRAPH_ROUTE
     ) {
         composable(route = Screen.Home.route) {
-            HomeScreen(navController)
+            MainComposable(navController)
         }
         composable(
             route = Screen.PatientDetail.route,
@@ -46,9 +47,6 @@ fun NavGraphBuilder.mainNavGraph(navController: NavController) {
         }
         composable(route = Screen.PatientEdit.route) {
             PatientEditScreen()
-        }
-        composable(route = Screen.Profile.route) {
-            ProfileScreen()
         }
     }
 }

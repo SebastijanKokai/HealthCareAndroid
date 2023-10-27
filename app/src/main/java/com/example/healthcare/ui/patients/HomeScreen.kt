@@ -20,7 +20,6 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.rememberDrawerState
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -36,17 +35,16 @@ import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.example.healthcare.data.room.entities.PatientEntity
 import com.example.healthcare.navigation.AUTH_GRAPH_ROUTE
-import com.example.healthcare.navigation.NavDrawer
+import com.example.healthcare.navigation.drawer.NavDrawer
 import com.example.healthcare.navigation.Screen
 import com.example.healthcare.ui.common.Alert
 
 @Composable
-fun HomeScreen(
+fun MainComposable(
     navController: NavController,
     viewModel: HomeScreenViewModel = hiltViewModel(),
 ) {
     val context = LocalContext.current
-    val patientsState: PatientState by viewModel.patientResponse.collectAsState()
     val isLoggedIn: Boolean by viewModel.isLoggedIn.collectAsState()
 
     val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
@@ -57,35 +55,55 @@ fun HomeScreen(
 
     NavDrawer(
         drawerState = drawerState,
-        onHome = {},
-        onProfile = {
-            navController.navigate(Screen.Profile.route)
-        },
-        onLogout = {
-            viewModel.addAuthChangeListener()
-            viewModel.logout()
-        }
-    ) {
-        Column(
-            modifier = Modifier.fillMaxSize(),
-            verticalArrangement = Arrangement.Center,
-            horizontalAlignment = Alignment.CenterHorizontally
-        ) {
-            when (val state = patientsState) {
-                is PatientState.Success ->
-                    PatientListScreen(
-                        navController = navController,
-                        patientsList = state.listOfPatients,
-                        viewModel
-                    )
+        onItemClick = { item ->
+            when (item.id) {
+                "home" -> {
+                    navController.navigate(Screen.Home.route)
+                }
 
-                is PatientState.Error -> Toast.makeText(context, state.error, Toast.LENGTH_LONG)
-                    .show()
+                "profile" -> {
+                    navController.navigate(Screen.Profile.route)
+                }
 
-                PatientState.Loading -> LoadingScreen()
+                "logout" -> {
+                    viewModel.addAuthChangeListener()
+                    viewModel.logout()
+                }
             }
         }
+    ) {
+        HomeScreen(navController = navController, viewModel = viewModel)
     }
+}
+
+@Composable
+fun HomeScreen(
+    navController: NavController,
+    viewModel: HomeScreenViewModel,
+) {
+    val context = LocalContext.current
+    val patientsState: PatientState by viewModel.patientResponse.collectAsState()
+
+    Column(
+        modifier = Modifier.fillMaxSize(),
+        verticalArrangement = Arrangement.Center,
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        when (val state = patientsState) {
+            is PatientState.Success ->
+                PatientListScreen(
+                    navController = navController,
+                    patientsList = state.listOfPatients,
+                    viewModel
+                )
+
+            is PatientState.Error -> Toast.makeText(context, state.error, Toast.LENGTH_LONG)
+                .show()
+
+            PatientState.Loading -> LoadingScreen()
+        }
+    }
+
 }
 
 @Composable
