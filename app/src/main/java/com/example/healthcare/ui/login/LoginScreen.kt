@@ -74,7 +74,7 @@ fun LoginScreen(
                 Toast.LENGTH_LONG
             ).show()
             navController.navigate(Screen.Main.route)
-        } else if (state.loginError != null) {
+        } else if (state.loginError != null && state.loginError!!.isNotEmpty()) {
             Toast.makeText(
                 context,
                 state.loginError,

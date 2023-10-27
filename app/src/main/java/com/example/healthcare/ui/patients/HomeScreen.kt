@@ -20,10 +20,10 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.rememberDrawerState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
@@ -38,19 +38,21 @@ import com.example.healthcare.data.room.entities.PatientEntity
 import com.example.healthcare.navigation.NavDrawer
 import com.example.healthcare.navigation.Screen
 import com.example.healthcare.ui.common.Alert
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
 
 @Composable
 fun HomeScreen(
     navController: NavController,
-    viewModel: PatientsScreenViewModel = hiltViewModel(),
+    viewModel: HomeScreenViewModel = hiltViewModel(),
 ) {
     val context = LocalContext.current
     val patientsState: PatientState by viewModel.patientResponse.collectAsState()
-    val coroutineScope = rememberCoroutineScope()
+    val isLoggedIn: Boolean by viewModel.isLoggedIn.collectAsState()
 
     val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
+
+    if (!isLoggedIn) {
+        navController.navigate(Screen.Auth.route)
+    }
 
     NavDrawer(
         drawerState = drawerState,
@@ -59,10 +61,8 @@ fun HomeScreen(
             navController.navigate(Screen.Profile.route)
         },
         onLogout = {
-            coroutineScope.launch {
-                viewModel.logout()
-                navController.navigate(Screen.Auth.route)
-            }
+            viewModel.addAuthChangeListener()
+            viewModel.logout()
         }
     ) {
         Column(
@@ -91,7 +91,7 @@ fun HomeScreen(
 fun PatientListScreen(
     navController: NavController,
     patientsList: List<PatientEntity>,
-    viewModel: PatientsScreenViewModel
+    viewModel: HomeScreenViewModel
 ) {
     var patientId by rememberSaveable {
         mutableStateOf("")

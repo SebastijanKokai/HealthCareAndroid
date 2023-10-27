@@ -11,6 +11,9 @@ import com.google.android.gms.auth.api.identity.BeginSignInRequest
 import com.google.android.gms.auth.api.identity.SignInClient
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.GoogleAuthProvider
+import kotlinx.coroutines.channels.awaitClose
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.callbackFlow
 import kotlinx.coroutines.tasks.await
 import java.util.concurrent.CancellationException
 import javax.inject.Inject
@@ -117,6 +120,7 @@ class AuthRepository @Inject constructor(
         try {
             oneTapClient.signOut().await()
             firebaseAuth.signOut()
+            delay(500)
         } catch (e: Exception) {
             e.printStackTrace()
             if (e is CancellationException) throw e
@@ -130,6 +134,16 @@ class AuthRepository @Inject constructor(
             profilePictureUrl = photoUrl?.toString(),
             contactNumber = phoneNumber,
         )
+    }
+
+    override fun getFirebaseAuthState() = callbackFlow  {
+        val authStateListener = FirebaseAuth.AuthStateListener { auth ->
+            trySend(auth.currentUser == null)
+        }
+        firebaseAuth.addAuthStateListener(authStateListener)
+        awaitClose {
+            firebaseAuth.removeAuthStateListener(authStateListener)
+        }
     }
 
 }
