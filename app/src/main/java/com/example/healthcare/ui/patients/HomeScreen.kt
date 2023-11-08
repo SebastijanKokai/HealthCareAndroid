@@ -14,11 +14,9 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Warning
 import androidx.compose.material3.CircularProgressIndicator
-import androidx.compose.material3.DrawerValue
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.rememberDrawerState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -34,52 +32,13 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.example.healthcare.data.room.entities.PatientEntity
-import com.example.healthcare.navigation.AUTH_GRAPH_ROUTE
-import com.example.healthcare.navigation.drawer.NavDrawer
 import com.example.healthcare.navigation.Screen
 import com.example.healthcare.ui.common.Alert
 
 @Composable
-fun MainComposable(
-    navController: NavController,
-    viewModel: HomeScreenViewModel = hiltViewModel(),
-) {
-    val context = LocalContext.current
-    val isLoggedIn: Boolean by viewModel.isLoggedIn.collectAsState()
-
-    val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
-
-    if (!isLoggedIn) {
-        navController.navigate(AUTH_GRAPH_ROUTE)
-    }
-
-    NavDrawer(
-        drawerState = drawerState,
-        onItemClick = { item ->
-            when (item.id) {
-                "home" -> {
-                    navController.navigate(Screen.Home.route)
-                }
-
-                "profile" -> {
-                    navController.navigate(Screen.Profile.route)
-                }
-
-                "logout" -> {
-                    viewModel.addAuthChangeListener()
-                    viewModel.logout()
-                }
-            }
-        }
-    ) {
-        HomeScreen(navController = navController, viewModel = viewModel)
-    }
-}
-
-@Composable
 fun HomeScreen(
     navController: NavController,
-    viewModel: HomeScreenViewModel,
+    viewModel: HomeScreenViewModel = hiltViewModel(),
 ) {
     val context = LocalContext.current
     val patientsState: PatientState by viewModel.patientResponse.collectAsState()

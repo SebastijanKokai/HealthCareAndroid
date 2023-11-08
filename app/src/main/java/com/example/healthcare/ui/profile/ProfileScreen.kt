@@ -33,6 +33,7 @@ fun ProfileScreen(
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
+        Text(text = "Profile PAGE")
         if (userState?.profilePictureUrl != null) {
             AsyncImage(
                 modifier = Modifier

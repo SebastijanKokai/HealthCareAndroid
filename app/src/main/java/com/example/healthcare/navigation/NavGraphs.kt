@@ -6,9 +6,9 @@ import androidx.navigation.NavType
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
 import androidx.navigation.navigation
+import com.example.healthcare.MainComposable
 import com.example.healthcare.ui.login.LoginScreen
 import com.example.healthcare.ui.patients.HomeScreen
-import com.example.healthcare.ui.patients.MainComposable
 import com.example.healthcare.ui.patients.PatientDetailScreen
 import com.example.healthcare.ui.patients.PatientEditScreen
 import com.example.healthcare.ui.profile.ProfileScreen
@@ -30,10 +30,10 @@ fun NavGraphBuilder.authNavGraph(navController: NavController) {
 
 fun NavGraphBuilder.mainNavGraph(navController: NavController) {
     navigation(
-        startDestination = Screen.Home.route,
+        startDestination = Screen.Main.route,
         route = MAIN_GRAPH_ROUTE
     ) {
-        composable(route = Screen.Home.route) {
+        composable(route = Screen.Main.route) {
             MainComposable(navController)
         }
         composable(
@@ -47,6 +47,20 @@ fun NavGraphBuilder.mainNavGraph(navController: NavController) {
         }
         composable(route = Screen.PatientEdit.route) {
             PatientEditScreen()
+        }
+    }
+}
+
+fun NavGraphBuilder.drawerNavGraph(navController: NavController) {
+    navigation(
+        startDestination = Screen.Home.route,
+        route = DRAWER_GRAPH_ROUTE
+    ) {
+        composable(route = Screen.Home.route) {
+            HomeScreen(navController = navController)
+        }
+        composable(route = Screen.Profile.route) {
+            ProfileScreen()
         }
     }
 }

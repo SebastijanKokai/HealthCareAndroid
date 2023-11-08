@@ -120,7 +120,6 @@ class AuthRepository @Inject constructor(
         try {
             oneTapClient.signOut().await()
             firebaseAuth.signOut()
-            delay(500)
         } catch (e: Exception) {
             e.printStackTrace()
             if (e is CancellationException) throw e
