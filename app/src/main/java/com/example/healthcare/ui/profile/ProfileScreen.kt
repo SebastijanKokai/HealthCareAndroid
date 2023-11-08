@@ -33,7 +33,6 @@ fun ProfileScreen(
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        Text(text = "Profile PAGE")
         if (userState?.profilePictureUrl != null) {
             AsyncImage(
                 modifier = Modifier
@@ -46,20 +45,26 @@ fun ProfileScreen(
             Spacer(modifier = Modifier.height(16.dp))
         }
         if (userState?.email != null) {
-            Text(
-                text = userState?.email!!,
-                textAlign = TextAlign.Center,
-                fontSize = 36.sp,
-            )
-            Spacer(modifier = Modifier.height(16.dp))
+            TextField(text = userState?.email!!)
+        }
+        if (userState?.username != null) {
+            TextField(text = userState?.username!!)
         }
         if (userState?.firstName != null && userState?.lastName != null) {
-            Text(
-                text = userState!!.firstName + " " + userState!!.lastName,
-                textAlign = TextAlign.Center,
-                fontSize = 36.sp,
-            )
-            Spacer(modifier = Modifier.height(16.dp))
+            TextField(text = userState!!.firstName + " " + userState!!.lastName)
+        }
+        if (userState?.contactNumber != null) {
+            TextField(text = userState?.contactNumber!!)
         }
     }
+}
+
+@Composable
+fun TextField(text: String) {
+    Text(
+        text = text,
+        textAlign = TextAlign.Center,
+        fontSize = 24.sp,
+    )
+    Spacer(modifier = Modifier.height(16.dp))
 }

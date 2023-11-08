@@ -132,10 +132,11 @@ class AuthRepository @Inject constructor(
             username = displayName,
             profilePictureUrl = photoUrl?.toString(),
             contactNumber = phoneNumber,
+            email = email
         )
     }
 
-    override fun getFirebaseAuthState() = callbackFlow  {
+    override fun getFirebaseAuthState() = callbackFlow {
         val authStateListener = FirebaseAuth.AuthStateListener { auth ->
             trySend(auth.currentUser == null)
         }
